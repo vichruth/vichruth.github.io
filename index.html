@@ -1,162 +1,208 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vichruth M | AI & Machine Learning</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0a0a0a',
-                        darkerBg: '#000000',
-                        accent: '#3b82f6',
-                    },
-                    fontFamily: {
-                        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'Segoe UI', 'Roboto', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <title>Vichruth M | AI & Machine Learning Portfolio</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-darkerBg text-white antialiased overflow-x-hidden selection:bg-accent selection:text-white">
+<body>
 
-    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500 py-5">
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="text-white font-bold tracking-widest text-lg">VICHRUTH M.</a>
-            <div class="hidden md:flex space-x-8 text-sm text-gray-300 font-medium tracking-wide">
-                <a href="#overview" class="hover:text-white transition-colors">Overview</a>
-                <a href="#experience" class="hover:text-white transition-colors">Experience</a>
-                <a href="#innovations" class="hover:text-white transition-colors">Innovations</a>
-                <a href="#education" class="hover:text-white transition-colors">Education</a>
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">Portfolio</a>
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects & Research</a>
+                <a href="#education">Education</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero" class="bg-light">
+        <div class="container hero-content fade-in">
+            <h1>Vichruth M</h1>
+            <h2 class="tagline">Machine Learning & Computer Vision | ML Intern | IoT & Edge AI Enthusiast</h2>
+            <p class="summary">
+                Computer Science Engineering student at Vellore Institute of Technology (VIT), specializing in Machine Learning, Computer Vision, and the intersection of AI with physical systems. Focused on building predictive models, autonomous architectures, and scalable edge computing solutions.
+            </p>
+            <div class="hero-actions">
+                <a href="mailto:vichruth.victorious@gmail.com" class="btn btn-primary">Contact Me</a>
+                <a href="https://linkedin.com/in/vichruthm9099" target="_blank" class="btn btn-secondary">LinkedIn</a>
+                <a href="https://github.com/vichruth" target="_blank" class="btn btn-secondary">GitHub</a>
             </div>
-        </div>
-    </nav>
-
-    <section id="overview" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <div class="parallax-bg w-full h-[120%] bg-cover bg-center opacity-40" style="background-image: url('https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=2070&auto=format&fit=crop');"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-darkerBg/50 to-darkerBg"></div>
-        </div>
-        
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto hero-content">
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight mb-4 title-anim">
-                Vision. Edge.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-500">Autonomy.</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-400 font-light tracking-wide mb-6 subtitle-anim">Researching Vision-Based Predictive Systems</p>
-            <p class="text-lg text-gray-500 max-w-2xl mx-auto desc-anim">Translating complex algorithmic concepts into scalable Edge AI. Specializing in autonomous vehicle systems, predictive models, and hardware-ML integration.</p>
         </div>
     </section>
 
-    <section id="experience" class="bg-darkerBg py-32 border-t border-white/10 relative z-20">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 gs-reveal">The Telemetry.</h2>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-20 gs-reveal">Building robust architectures from the cloud to the edge.</p>
+    <section id="about" class="container section-padding fade-in">
+        <div class="section-header">
+            <h2>Professional Summary</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>I thrive on translating complex mathematical and algorithmic concepts into tangible, scalable solutions. Currently, as a Junior Core Member of The Electronics Club at VIT, I integrate ML with hardware, exploring how deep learning drives innovation in IoT.</p>
+                <p>Beyond my internships at KalkiNi and Cloudstier, I am deeply invested in independent research. I currently have a patent under review and am actively drafting a research paper on Person Re-Identification. I am actively seeking a Summer 2026 Machine Learning Internship to tackle high-impact, data-heavy problems.</p>
+            </div>
+            <div class="skills-container">
+                <h3>Core Technologies</h3>
+                <div class="skills-tags">
+                    <span>Python</span>
+                    <span>C++</span>
+                    <span>Java</span>
+                    <span>TensorFlow</span>
+                    <span>Scikit-Learn</span>
+                    <span>XGBoost</span>
+                    <span>Computer Vision</span>
+                    <span>Flutter</span>
+                    <span>SQL</span>
+                    <span>Edge AI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="bg-light section-padding fade-in">
+        <div class="container">
+            <div class="section-header">
+                <h2>Work Experience</h2>
+                <div class="divider"></div>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 gs-stagger">
-                <div class="flex flex-col items-center spec-card">
-                    <span class="text-accent text-sm font-bold tracking-widest uppercase mb-2">KalkiNi</span>
-                    <span class="text-4xl font-bold text-white mb-2">ML Intern</span>
-                    <span class="text-gray-400">AI Surveillance</span>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Jan 2026 - Present</div>
+                    <div class="timeline-content">
+                        <h3>Junior Core Member</h3>
+                        <h4>The Electronics Club, VIT | Vellore, India</h4>
+                        <p>Integrating machine learning with hardware and exploring how advanced algorithms and deep learning can drive innovation in IoT applications.</p>
+                    </div>
                 </div>
-                <div class="flex flex-col items-center spec-card">
-                    <span class="text-accent text-sm font-bold tracking-widest uppercase mb-2">Cloudstier</span>
-                    <span class="text-4xl font-bold text-white mb-2">AI Intern</span>
-                    <span class="text-gray-400">Model Deployment</span>
-                </div>
-                <div class="flex flex-col items-center spec-card">
-                    <span class="text-accent text-sm font-bold tracking-widest uppercase mb-2">Electronics Club</span>
-                    <span class="text-4xl font-bold text-white mb-2">Core Team</span>
-                    <span class="text-gray-400">Hardware & IoT Integration</span>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="innovations" class="flex flex-col md:flex-row h-auto md:h-screen bg-darkBg overflow-hidden border-t border-white/5">
-        <div class="w-full md:w-1/2 h-[50vh] md:h-full relative overflow-hidden">
-            <div class="parallax-img absolute inset-0 w-full h-[120%] bg-cover bg-center opacity-80" style="background-image: url('https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2069&auto=format&fit=crop');"></div>
-        </div>
-        <div class="w-full md:w-1/2 flex items-center justify-center p-12 lg:p-24 relative z-10 bg-darkBg">
-            <div class="max-w-lg right-reveal">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6">Pre-Cog Brakes.</h2>
-                <p class="text-lg text-gray-400 leading-relaxed mb-8">Anticipating the apex. Secured 2nd Runner-Up at a National Ideathon for developing a vision-based predictive torque vectoring system, bringing intelligent autonomous braking closer to reality.</p>
-                <div class="flex flex-wrap gap-3">
-                    <span class="px-4 py-2 rounded-full border border-white/20 text-sm text-gray-300 backdrop-blur-sm">Computer Vision</span>
-                    <span class="px-4 py-2 rounded-full border border-white/20 text-sm text-gray-300 backdrop-blur-sm">Predictive Systems</span>
-                    <span class="px-4 py-2 rounded-full border border-white/20 text-sm text-gray-300 backdrop-blur-sm">Autonomous AI</span>
+                <div class="timeline-item">
+                    <div class="timeline-date">Nov 2024 - Jan 2026</div>
+                    <div class="timeline-content">
+                        <h3>App Developer</h3>
+                        <h4>Padasalai | Tiruppatur, India</h4>
+                        <p>Dedicated to creating a seamless and intuitive web application that enhances the user experience and extends the functionality of the Padasalai website (www.padasalai.net). Leveraging modern development practices to deliver a robust platform for students.</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="flex flex-col md:flex-row-reverse h-auto md:h-screen bg-darkBg overflow-hidden border-t border-white/5">
-        <div class="w-full md:w-1/2 h-[50vh] md:h-full relative overflow-hidden">
-            <div class="parallax-img absolute inset-0 w-full h-[120%] bg-cover bg-center opacity-80" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');"></div>
-        </div>
-        <div class="w-full md:w-1/2 flex items-center justify-center p-12 lg:p-24 relative z-10 bg-darkBg">
-            <div class="max-w-lg left-reveal">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6">Edge-AI Diagnostics.</h2>
-                <p class="text-lg text-gray-400 leading-relaxed mb-4">On-board intelligence. Developed a 100% offline Low-Parameter AI Bug Detector for resource-constrained 8GB devices. Utilizing deterministic AST parsing and a LoRA-tuned CodeT5 model to analyze Time/Space complexity natively.</p>
-                <p class="text-sm text-gray-500 italic mb-8">*Currently adapting this system architecture into a formal academic research paper.</p>
-                <div class="flex flex-wrap gap-3">
-                    <span class="px-4 py-2 rounded-full border border-white/20 text-sm text-gray-300">CodeT5 & LoRA</span>
-                    <span class="px-4 py-2 rounded-full border border-white/20 text-sm text-gray-300">AST Parsing</span>
-                    <span class="px-4 py-2 rounded-full border border-white/20 text-sm text-gray-300">Node.js / Python</span>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 2025 - Sep 2025</div>
+                    <div class="timeline-content">
+                        <h3>Machine Learning Intern</h3>
+                        <h4>KalkiNi AI Surveillance System | Vellore, India</h4>
+                        <p>Worked on AI surveillance architectures. Developed a Best Crop Prediction model based on NPK soil data and achieved 77% accuracy on a custom CIFAR-10 image classification task.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">May 2025 - Jun 2025</div>
+                    <div class="timeline-content">
+                        <h3>AI Intern</h3>
+                        <h4>Cloudstier Solutions Pvt. Ltd. | Tiruppatur, India</h4>
+                        <p>Trained to build a web-based chatbot using the Django framework and the lightweight Phi model. Handled backend integration, API testing via Postman, and basic NLP processing.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Jan 2025 - Feb 2025</div>
+                    <div class="timeline-content">
+                        <h3>Product Developer</h3>
+                        <h4>Boardly.in | Vellore, India</h4>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="relative h-[80vh] flex items-center justify-center overflow-hidden border-t border-white/5">
-        <div class="absolute inset-0 z-0">
-            <div class="parallax-bg w-full h-[130%] bg-cover bg-center opacity-30" style="background-image: url('https://images.unsplash.com/photo-1532911520668-3d8d641113b2?q=80&w=2070&auto=format&fit=crop');"></div>
-            <div class="absolute inset-0 bg-darkerBg/60 backdrop-blur-[2px]"></div>
+    <section id="projects" class="container section-padding fade-in">
+        <div class="section-header">
+            <h2>Key Projects & Research</h2>
+            <div class="divider"></div>
         </div>
-        <div class="relative z-10 text-center px-6 max-w-4xl scale-reveal">
-            <h2 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600 leading-none">XGBoost</h2>
-            <h3 class="text-2xl md:text-4xl font-semibold mt-2 mb-6">Strategy Engine</h3>
-            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">Built a GPU-accelerated probability classification engine for Kaggle. Engineered custom "Four Factor" features using Pandas with chronologically shifted expanding windows to prevent data leakage in historical telemetry.</p>
-            <div class="flex flex-wrap justify-center gap-3">
-                <span class="px-5 py-2 rounded-full bg-white/10 text-sm font-medium backdrop-blur-md">Data Science</span>
-                <span class="px-5 py-2 rounded-full bg-white/10 text-sm font-medium backdrop-blur-md">Pandas</span>
-                <span class="px-5 py-2 rounded-full bg-white/10 text-sm font-medium backdrop-blur-md">GPU Acceleration</span>
+
+        <div class="projects-grid">
+            <div class="card">
+                <h3>March Mania Strategy Engine (Kaggle)</h3>
+                <p class="date-text">March 2026</p>
+                <p>Earned the Competitor Badge building a GPU-accelerated probability classification engine using XGBoost. Engineered "Four Factors" features via Pandas with chronologically shifted expanding windows to prevent data leakage.</p>
+            </div>
+
+            <div class="card">
+                <h3>Low-Parameter AI Bug Detector</h3>
+                <p class="date-text">Jul 2025 - Oct 2025</p>
+                <p>Engineered a 100% offline Edge-AI system to detect/fix Python bugs and analyze Time/Space complexity natively. Fine-tuned a CodeT5 model using PEFT LoRA. Connected to a Node.js/Flask backend. Currently adapting architecture into a formal research paper.</p>
+            </div>
+
+            <div class="card">
+                <h3>FFCS-Buddy (Hackademia 2nd Prize)</h3>
+                <p class="date-text">Oct 2025</p>
+                <p>Developed a hybrid search platform to help VIT students find teachers via natural language. Engineered the backend using the <code>all-MiniLM-L6-v2</code> sentence-transformer served through a FastAPI backend.</p>
+            </div>
+
+            <div class="card">
+                <h3>Pre-Cog Brakes (National Ideathon)</h3>
+                <p class="date-text">2025</p>
+                <p>Secured 2nd Runner-Up for developing a conceptual vision-based predictive torque vectoring system for autonomous vehicles, designed to anticipate the apex of corners.</p>
+            </div>
+
+            <div class="card">
+                <h3>F1 Pit Window Predictor</h3>
+                <p class="date-text">Dec 2025</p>
+                <p>Created a machine learning model with core logic to generate optimal pit stop strategies in Formula 1 by analyzing historical race progression data.</p>
+            </div>
+
+            <div class="card">
+                <h3>Vehicle Anomaly Detection</h3>
+                <p class="date-text">Oct 2024</p>
+                <p>Developed a machine learning model to predict mechanical anomalies and unusual activities in cars utilizing raw OBD (On-Board Diagnostics) telemetry data.</p>
             </div>
         </div>
     </section>
 
-    <section class="bg-darkerBg py-32 border-t border-white/10 relative z-20">
-        <div class="max-w-4xl mx-auto px-6 text-center gs-reveal">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">Semantic Navigation.</h2>
-            <p class="text-lg md:text-xl text-gray-400 leading-relaxed">2nd Prize Winner at Hackademia. Engineered the backend for FFCS-Buddy, a hybrid search platform utilizing the <code class="bg-white/10 px-2 py-1 rounded text-accent font-mono text-sm mx-1">all-MiniLM-L6-v2</code> sentence-transformer and FastAPI to process complex, natural language user queries with extreme low latency.</p>
-        </div>
-    </section>
-
-    <footer id="education" class="bg-darkBg py-32 border-t border-white/10">
-        <div class="max-w-4xl mx-auto px-6 text-center gs-reveal">
-            <h2 class="text-4xl font-bold mb-2">The Foundation.</h2>
-            <p class="text-2xl text-gray-300 font-light mb-4">Vellore Institute of Technology</p>
-            <p class="text-gray-400 mb-2">B.Tech in Computer Science Engineering | 2024 - 2028 | 8.05 CGPA</p>
-            <p class="text-gray-500 text-sm mb-12">Stanford Machine Learning Course Graduate • VIT Generative AI Bootcamp</p>
+    <section id="education" class="bg-light section-padding fade-in">
+        <div class="container">
+            <div class="section-header">
+                <h2>Education & Certifications</h2>
+                <div class="divider"></div>
+            </div>
             
-            <div class="flex justify-center gap-6 flex-wrap">
-                <a href="mailto:vichruth.victorious@gmail.com" class="px-8 py-3 rounded-full border border-white/30 hover:bg-white hover:text-black transition-all duration-300 font-medium">Contact Me</a>
-                <a href="https://linkedin.com/in/vichruthm9099" target="_blank" class="px-8 py-3 rounded-full border border-white/30 hover:bg-white hover:text-black transition-all duration-300 font-medium">LinkedIn</a>
-                <a href="https://github.com/vichruth" target="_blank" class="px-8 py-3 rounded-full border border-white/30 hover:bg-white hover:text-black transition-all duration-300 font-medium">GitHub</a>
+            <div class="education-grid">
+                <div class="edu-card">
+                    <h3>Vellore Institute of Technology (VIT)</h3>
+                    <h4>B.Tech in Computer Science and Engineering</h4>
+                    <p class="date-text">Jan 2024 - Dec 2028</p>
+                    <p><strong>CGPA:</strong> 8.05</p>
+                </div>
+                
+                <div class="edu-card">
+                    <h3>Maharishi International Residential School</h3>
+                    <h4>High School Education</h4>
+                    <p class="date-text">Jan 2020 - Dec 2024</p>
+                    <p><strong>GPA:</strong> 85%</p>
+                </div>
             </div>
-            <p class="text-gray-600 text-sm mt-16">&copy; 2026 Vichruth M. Engineered for the future.</p>
+
+            <div class="certs-container mt-4">
+                <h3>Certifications & Bootcamps</h3>
+                <ul class="clean-list">
+                    <li>✔️ Stanford Machine Learning Course Graduate</li>
+                    <li>✔️ VIT Generative AI Bootcamp Attendee</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container text-center">
+            <p>Based in Tiruppatur, Tamil Nadu, India.</p>
+            <p>&copy; 2026 Vichruth M. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
     <script src="script.js"></script>
 </body>
 </html>
