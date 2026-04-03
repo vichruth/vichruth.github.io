@@ -1,0 +1,17 @@
+/* Custom utility classes not natively handled by basic Tailwind */
+
+/* Glassmorphism Navigation State applied via JS */
+nav.nav-scrolled {
+    background-color: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Ensure smooth image rendering for parallax */
+.parallax-bg, .parallax-img {
+    will-change: transform;
+    transform: translateZ(0);
+}
