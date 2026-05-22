@@ -1,0 +1,178 @@
+import * as React from "react";
+import { ChevronDown, Cpu, Sparkles, Code, Brain, Zap, Terminal } from "lucide-react";
+import { motion } from "motion/react";
+
+import Navbar from "./components/Navbar";
+import ExperienceTimeline from "./components/ExperienceTimeline";
+import Projects from "./components/Projects";
+import SpecsBento from "./components/SpecsBento";
+import InteractiveEdgeStudio from "./components/InteractiveEdgeStudio";
+import EducationAwards from "./components/EducationAwards";
+import Footer from "./components/Footer";
+import NeuralNetworkBackground from "./components/NeuralNetworkBackground";
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-400 selection:text-zinc-950">
+      
+      {/* Apple-style sticky Glass Navbar */}
+      <Navbar />
+
+      {/* Hero: Unveiling Section */}
+      <section 
+        id="home" 
+        className="relative flex min-h-[92vh] flex-col justify-between overflow-hidden px-6 pt-16 pb-12"
+      >
+        <NeuralNetworkBackground />
+        
+        {/* Deep ambient grid pattern background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f29370d_1px,transparent_1px),linear-gradient(to_bottom,#1f29370d_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none" />
+
+        {/* Cinematic glow blobs */}
+        <div className="absolute top-1/4 left-1/2 -z-10 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-26 right-12 -z-10 h-72 w-72 rounded-full bg-purple-500/5 blur-[100px] pointer-events-none" />
+
+        {/* Empty top height to push center down */}
+        <div />
+
+        {/* Content Box */}
+        <div className="mx-auto max-w-7xl w-full text-center space-y-8 z-10">
+          
+          {/* Slogan Pill */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mx-auto inline-flex items-center space-x-2.5 rounded-full border border-zinc-800 bg-zinc-900/40 px-4 py-1.5 backdrop-blur-sm"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-300">
+              AI SURVEILLANCE & EDGE HARDWARE OPTIMIZATION
+            </span>
+          </motion.div>
+
+          {/* Name Display */}
+          <div className="space-y-3.5">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="font-display text-5xl font-bold tracking-tight text-white md:text-7xl lg:text-8xl"
+            >
+              Vichruth M.
+            </motion.h1>
+
+            {/* Apple style product line */}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+              className="mx-auto max-w-3xl font-sans text-xl font-semibold tracking-tight text-zinc-400 sm:text-2xl"
+            >
+              High-efficiency machine learning. Deployed natively at the edge.
+            </motion.h2>
+          </div>
+
+          {/* Intro Paragraph */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mx-auto max-w-2xl font-sans text-sm md:text-base text-zinc-500 leading-relaxed font-medium"
+          >
+            Computer Science & Engineering student specializing in building predictive models, transformer-based architectures, and optimizing heavyweight AI pipelines to execute natively on restricted VRAM budgets.
+          </motion.p>
+
+          {/* Inline Specs Row */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.65 }}
+            className="flex flex-wrap items-center justify-center gap-6 pt-2 font-mono text-[11px] tracking-wider text-zinc-400 select-none"
+          >
+            <div className="flex items-center space-x-1.5">
+              <Cpu className="h-3.5 w-3.5 text-emerald-400" />
+              <span>&lt;6GB VRAM EXCEL</span>
+            </div>
+            <span className="text-zinc-800 hidden sm:inline">•</span>
+            <div className="flex items-center space-x-1.5">
+              <Code className="h-3.5 w-3.5 text-purple-400" />
+              <span>FP16 QUANTIZATION</span>
+            </div>
+            <span className="text-zinc-800 hidden sm:inline">•</span>
+            <div className="flex items-center space-x-1.5">
+              <Brain className="h-3.5 w-3.5 text-blue-400" />
+              <span>OFFLINE RAG ENCLAVE</span>
+            </div>
+            <span className="text-zinc-800 hidden sm:inline">•</span>
+            <div className="flex items-center space-x-1.5">
+              <Zap className="h-3.5 w-3.5 text-amber-400" />
+              <span>50HZ telemetry</span>
+            </div>
+          </motion.div>
+
+        </div>
+
+        {/* Scroll CTA Indicator */}
+        <div className="mx-auto flex flex-col items-center justify-center text-zinc-600 mt-12 z-10">
+          <span className="font-sans text-[10px] tracking-widest font-semibold uppercase mb-1">Scroll to inspect specs</span>
+          <ChevronDown className="h-4 w-4 animate-bounce text-emerald-400" />
+        </div>
+
+      </section>
+
+      {/* Spacing divider */}
+      <div className="h-12 w-full border-t border-zinc-900 bg-zinc-950" />
+
+      {/* Section: Professional Log (Experience) */}
+      <section id="experience" className="bg-zinc-950 py-20 px-6">
+        <div className="mx-auto max-w-7xl">
+          <ExperienceTimeline />
+        </div>
+      </section>
+
+      {/* Section: The Engineering Lineup (Projects) */}
+      <section id="projects" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60">
+        <div className="mx-auto max-w-7xl">
+          <Projects />
+        </div>
+      </section>
+
+      {/* Section: Technical Specifications (Bento Grid) */}
+      <section id="specs" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60">
+        <div className="mx-auto max-w-7xl">
+          <SpecsBento />
+        </div>
+      </section>
+
+      {/* Section: Interactive EdgeAI Studio Sandbox */}
+      <section id="simulator" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60 bg-[radial-gradient(#1f293708_1px,transparent_1px)] bg-[size:2rem_2rem]">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 flex flex-col space-y-2">
+            <span className="font-semibold text-xs tracking-widest text-emerald-400 uppercase">
+              Embedded Hardware Benchmarks
+            </span>
+            <h3 className="font-sans text-3xl font-bold tracking-tight text-white md:text-4xl">
+              Physical Compilation Deck
+            </h3>
+            <p className="font-sans text-sm text-zinc-500 max-w-md">
+              Interact directly with precision sliders and architecture metrics to inspect core compilation diagnostics, latency ratios, and heat logs.
+            </p>
+          </div>
+          <InteractiveEdgeStudio />
+        </div>
+      </section>
+
+      {/* Section: Education, Achievements & Honors */}
+      <section id="education" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60">
+        <div className="mx-auto max-w-7xl">
+          <EducationAwards />
+        </div>
+      </section>
+
+      {/* Footer and Contact Handles */}
+      <Footer />
+
+    </div>
+  );
+}
