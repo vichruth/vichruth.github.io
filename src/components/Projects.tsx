@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Terminal, Cpu, FileCode2, Gauge, Shield, Layers, Copy, Check, Github, ExternalLink } from "lucide-react";
+import { Terminal, Cpu, FileCode2, Gauge, Shield, Layers, Copy, Check, ExternalLink } from "lucide-react";
+import { GithubIcon } from "./BrandIcons";
 import { projects } from "../data";
-import { Project } from "../types";
 import { motion, AnimatePresence } from "motion/react";
 
 export default function Projects() {
@@ -100,8 +100,8 @@ export default function Projects() {
 
               {/* Hardware / Engine Metrics Row */}
               <div className="grid grid-cols-3 gap-2.5 bg-zinc-950 p-4 rounded-2xl border border-zinc-900">
-                {selectedProject.metrics.map((met, i) => (
-                  <div key={i} className="text-left">
+                {selectedProject.metrics.map((met) => (
+                  <div key={met.label} className="text-left">
                     <span className="font-sans text-[10px] text-zinc-500 block leading-tight">{met.label}</span>
                     <strong className="font-mono text-xs font-bold text-zinc-200 mt-1 block">
                       {met.value}
@@ -116,8 +116,8 @@ export default function Projects() {
                   Key Accomplishments
                 </h5>
                 <ul className="space-y-2 text-zinc-400 text-xs">
-                  {selectedProject.points.map((p, index) => (
-                    <li key={index} className="flex items-start space-x-2.5 leading-relaxed">
+                  {selectedProject.points.map((p) => (
+                    <li key={p} className="flex items-start space-x-2.5 leading-relaxed">
                       <span className="text-[10px] text-emerald-500 mt-1">■</span>
                       <span>{p}</span>
                     </li>
@@ -147,7 +147,7 @@ export default function Projects() {
                       rel="noreferrer"
                       className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/40 hover:bg-zinc-900 hover:border-zinc-700 px-3 py-1.5 text-zinc-200 transition-all font-semibold text-[11px] active:scale-95"
                     >
-                      <Github className="h-3.5 w-3.5" /> View Code
+                      <GithubIcon className="h-3.5 w-3.5" /> View Code
                     </a>
                   )}
                   {selectedProject.demoUrl && (
@@ -188,7 +188,7 @@ export default function Projects() {
 
             {selectedProject.codeHighlight && (
               <button
-                onClick={() => handleCopyCode(selectedProject.codeHighlight!.code)}
+                onClick={() => handleCopyCode(selectedProject.codeHighlight?.code || "")}
                 className="flex items-center gap-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800/60 px-3 py-1 text-zinc-400 hover:text-zinc-200 transition-all font-sans text-[11px] font-semibold cursor-pointer"
                 id="btn-copy-code"
               >

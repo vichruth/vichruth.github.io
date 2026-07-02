@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Github, Linkedin, Cpu } from "lucide-react";
+import { Cpu } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "./BrandIcons";
 import { useLenis } from "../lib/SmoothScroll";
 
 export default function Navbar() {
@@ -48,8 +49,10 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b border-zinc-900 bg-zinc-950/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
         {/* Brand */}
-        <div 
-          onClick={() => scrollToSection("home")} 
+        <button
+          type="button"
+          onClick={() => scrollToSection("home")}
+          aria-label="Back to top"
           className="flex cursor-pointer items-center space-x-2 text-zinc-100 hover:text-white transition-colors"
           id="nav-brand"
         >
@@ -57,7 +60,7 @@ export default function Navbar() {
           <span className="font-sans font-semibold tracking-tight text-sm">Vichruth M.</span>
           <span className="hidden sm:inline-block h-3 w-px bg-zinc-800" />
           <span className="hidden sm:inline-block font-mono text-[10px] text-zinc-500 tracking-wider font-semibold">EDGE.AI</span>
-        </div>
+        </button>
 
         {/* Links */}
         <div className="hidden md:flex items-center space-x-8 font-sans text-xs font-medium text-zinc-400">
@@ -92,7 +95,7 @@ export default function Navbar() {
             aria-label="LinkedIn"
             id="nav-social-linkedin"
           >
-            <Linkedin className="h-4 w-4" />
+            <LinkedinIcon className="h-4 w-4" />
           </a>
           <a
             href="https://github.com/vichruth"
@@ -103,7 +106,7 @@ export default function Navbar() {
             aria-label="GitHub"
             id="nav-social-github"
           >
-            <Github className="h-4 w-4" />
+            <GithubIcon className="h-4 w-4" />
           </a>
           
           <button

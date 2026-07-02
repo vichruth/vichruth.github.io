@@ -4,7 +4,7 @@ import App from './App.tsx';
 import {SmoothScrollProvider} from './lib/SmoothScroll.tsx';
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <SmoothScrollProvider>
       <App />
