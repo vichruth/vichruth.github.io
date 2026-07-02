@@ -1,8 +1,10 @@
 import * as React from "react";
-import { ChevronDown, Cpu, Sparkles, Code, Brain, Zap, Terminal } from "lucide-react";
-import { motion } from "motion/react";
+import { ChevronDown, Cpu, Sparkles, Code, Brain, Zap } from "lucide-react";
+import { motion, useScroll, useTransform } from "motion/react";
 
 import Navbar from "./components/Navbar";
+import ScrollProgress from "./components/ScrollProgress";
+import Reveal from "./components/Reveal";
 import ExperienceTimeline from "./components/ExperienceTimeline";
 import Projects from "./components/Projects";
 import SpecsBento from "./components/SpecsBento";
@@ -12,19 +14,36 @@ import Footer from "./components/Footer";
 import NeuralNetworkBackground from "./components/NeuralNetworkBackground";
 
 export default function App() {
+  const heroRef = React.useRef<HTMLElement>(null);
+
+  // Parallax: hero content drifts up and fades as it scrolls out of view.
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 220]);
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-400 selection:text-zinc-950">
-      
+
+      {/* Scroll progress indicator */}
+      <ScrollProgress />
+
       {/* Apple-style sticky Glass Navbar */}
       <Navbar />
 
       {/* Hero: Unveiling Section */}
-      <section 
-        id="home" 
+      <section
+        id="home"
+        ref={heroRef}
         className="relative flex min-h-[92vh] flex-col justify-between overflow-hidden px-6 pt-16 pb-12"
       >
-        <NeuralNetworkBackground />
-        
+        <motion.div style={{ y: bgY }} className="absolute inset-0">
+          <NeuralNetworkBackground />
+        </motion.div>
+
         {/* Deep ambient grid pattern background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f29370d_1px,transparent_1px),linear-gradient(to_bottom,#1f29370d_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none" />
 
@@ -36,8 +55,11 @@ export default function App() {
         <div />
 
         {/* Content Box */}
-        <div className="mx-auto max-w-7xl w-full text-center space-y-8 z-10">
-          
+        <motion.div
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="mx-auto max-w-7xl w-full text-center space-y-8 z-10"
+        >
+
           {/* Slogan Pill */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -80,7 +102,7 @@ export default function App() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="mx-auto max-w-2xl font-sans text-sm md:text-base text-zinc-500 leading-relaxed font-medium"
           >
-            Computer Science & Engineering student specializing in building predictive models, transformer-based architectures, and optimizing heavyweight AI pipelines to execute natively on restricted VRAM budgets.
+            Computer Science &amp; Engineering student specializing in building predictive models, transformer-based architectures, and optimizing heavyweight AI pipelines to execute natively on restricted VRAM budgets.
           </motion.p>
 
           {/* Inline Specs Row */}
@@ -92,7 +114,7 @@ export default function App() {
           >
             <div className="flex items-center space-x-1.5">
               <Cpu className="h-3.5 w-3.5 text-emerald-400" />
-              <span>&lt;6GB VRAM EXCEL</span>
+              <span>&lt;6GB VRAM</span>
             </div>
             <span className="text-zinc-800 hidden sm:inline">•</span>
             <div className="flex items-center space-x-1.5">
@@ -111,13 +133,16 @@ export default function App() {
             </div>
           </motion.div>
 
-        </div>
+        </motion.div>
 
         {/* Scroll CTA Indicator */}
-        <div className="mx-auto flex flex-col items-center justify-center text-zinc-600 mt-12 z-10">
+        <motion.div
+          style={{ opacity: heroOpacity }}
+          className="mx-auto flex flex-col items-center justify-center text-zinc-600 mt-12 z-10"
+        >
           <span className="font-sans text-[10px] tracking-widest font-semibold uppercase mb-1">Scroll to inspect specs</span>
           <ChevronDown className="h-4 w-4 animate-bounce text-emerald-400" />
-        </div>
+        </motion.div>
 
       </section>
 
@@ -127,28 +152,34 @@ export default function App() {
       {/* Section: Professional Log (Experience) */}
       <section id="experience" className="bg-zinc-950 py-20 px-6">
         <div className="mx-auto max-w-7xl">
-          <ExperienceTimeline />
+          <Reveal>
+            <ExperienceTimeline />
+          </Reveal>
         </div>
       </section>
 
       {/* Section: The Engineering Lineup (Projects) */}
       <section id="projects" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60">
         <div className="mx-auto max-w-7xl">
-          <Projects />
+          <Reveal>
+            <Projects />
+          </Reveal>
         </div>
       </section>
 
       {/* Section: Technical Specifications (Bento Grid) */}
       <section id="specs" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60">
         <div className="mx-auto max-w-7xl">
-          <SpecsBento />
+          <Reveal>
+            <SpecsBento />
+          </Reveal>
         </div>
       </section>
 
       {/* Section: Interactive EdgeAI Studio Sandbox */}
       <section id="simulator" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60 bg-[radial-gradient(#1f293708_1px,transparent_1px)] bg-[size:2rem_2rem]">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex flex-col space-y-2">
+          <Reveal className="mb-8 flex flex-col space-y-2">
             <span className="font-semibold text-xs tracking-widest text-emerald-400 uppercase">
               Embedded Hardware Benchmarks
             </span>
@@ -158,15 +189,19 @@ export default function App() {
             <p className="font-sans text-sm text-zinc-500 max-w-md">
               Interact directly with precision sliders and architecture metrics to inspect core compilation diagnostics, latency ratios, and heat logs.
             </p>
-          </div>
-          <InteractiveEdgeStudio />
+          </Reveal>
+          <Reveal delay={0.1}>
+            <InteractiveEdgeStudio />
+          </Reveal>
         </div>
       </section>
 
       {/* Section: Education, Achievements & Honors */}
       <section id="education" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60">
         <div className="mx-auto max-w-7xl">
-          <EducationAwards />
+          <Reveal>
+            <EducationAwards />
+          </Reveal>
         </div>
       </section>
 

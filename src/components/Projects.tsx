@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Folder, Terminal, Cpu, FileCode2, Gauge, Shield, Layers, Copy, Check } from "lucide-react";
+import { Terminal, Cpu, FileCode2, Gauge, Shield, Layers, Copy, Check, Github, ExternalLink } from "lucide-react";
 import { projects } from "../data";
 import { Project } from "../types";
 import { motion, AnimatePresence } from "motion/react";
@@ -136,6 +136,32 @@ export default function Projects() {
                   </span>
                 ))}
               </div>
+
+              {/* Project Links */}
+              {(selectedProject.githubUrl || selectedProject.demoUrl) && (
+                <div className="flex flex-wrap gap-2.5 pt-1">
+                  {selectedProject.githubUrl && (
+                    <a
+                      href={selectedProject.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/40 hover:bg-zinc-900 hover:border-zinc-700 px-3 py-1.5 text-zinc-200 transition-all font-semibold text-[11px] active:scale-95"
+                    >
+                      <Github className="h-3.5 w-3.5" /> View Code
+                    </a>
+                  )}
+                  {selectedProject.demoUrl && (
+                    <a
+                      href={selectedProject.demoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-1.5 rounded-lg bg-emerald-400 hover:bg-emerald-300 text-zinc-950 px-3 py-1.5 transition-all font-semibold text-[11px] active:scale-95"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" /> Live Demo
+                    </a>
+                  )}
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -182,11 +208,11 @@ export default function Projects() {
           </div>
 
           {/* Code Window Body */}
-          <div className="flex-1 overflow-auto bg-zinc-950 p-4 font-mono text-[11px] leading-relaxed relative scrollbar-thin">
+          <div data-lenis-prevent className="flex-1 overflow-auto bg-zinc-950 p-4 font-mono text-[11px] leading-relaxed relative scrollbar-thin">
             {/* Ambient terminal label */}
             <div className="absolute right-4 bottom-4 flex items-center space-x-1 text-[10px] text-zinc-700 pointer-events-none">
               <Terminal className="h-3 w-3" />
-              <span>XCODE SOURCE INSPECTOR</span>
+              <span>SOURCE INSPECTOR</span>
             </div>
 
             <AnimatePresence mode="wait">

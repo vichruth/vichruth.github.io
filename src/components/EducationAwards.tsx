@@ -43,7 +43,7 @@ export default function EducationAwards() {
               </div>
 
               <div className="flex items-center gap-1.5 text-[10.5px] font-sans text-zinc-500 mb-4 bg-zinc-900/10 py-1 px-2.5 rounded-md border border-zinc-900/40 w-fit">
-                <Calendar className="h-3.5 w-3.5 text-zinc-650" /> {edu.period}
+                <Calendar className="h-3.5 w-3.5 text-zinc-600" /> {edu.period}
                 <span className="h-2 w-px bg-zinc-800" />
                 <span className="text-zinc-400">{edu.location}</span>
               </div>

@@ -9,7 +9,7 @@ export const projects: Project[] = [
     description: "100% offline, zero-shot multimodal semantic video search engine designed with strict 6GB VRAM hardware constraints.",
     points: [
       "Engineered a zero-shot video indexing pipeline operating fully on-device within tight budget boundaries.",
-      "Manipulated raw PyTorch tensors to cast weights to FP16 (Half-Precision), reducing graphic memory consumption by 48% while maintaining high accuracy.",
+      "Cast model weights to FP16 (half-precision), cutting VRAM usage by ~48% with negligible accuracy loss.",
       "Built low-latency temporal video ingestion loops using OpenCV and structured a local high-dimensional FAISS vector database for real-time semantic query matching."
     ],
     metrics: [
@@ -58,7 +58,7 @@ def index_video_frames(video_path, faiss_index, batch_size=32):
     category: "Generative AI & Privacy Enclave",
     description: "Secure, zero-trust pipeline built entirely on a localized Gemma 2/4B architecture to process highly sensitive historical testimonies.",
     points: [
-      "Designed a restricted on-device environment preventing any network queries, ensuring strict data security and sovereign confidentiality.",
+      "Designed a fully on-device environment that blocks all network access, keeping sensitive data confidential.",
       "Implemented a customized local Retrieval-Augmented Generation (RAG) agent operating against an encrypted vector database.",
       "Extracted structured semantic metadata and validated information flows using zero outside API calls."
     ],
@@ -90,11 +90,11 @@ class ZeroTrustRAG:
   {
     id: "low-param-bug",
     title: "Low-Parameter AI Bug Detector",
-    subtitle: "State-of-the-Art Transformer Code Assistant",
+    subtitle: "Transformer-based Code Assistant",
     category: "Natural Language Processing",
     description: "Hybrid Edge-AI system designed to detect and repair Python syntax bugs while performing Time and Space complexity analyses.",
     points: [
-      "Fine-tuned a CodeT5 transformer model on an curated 2,000-sample syntax database utilizing parameter-efficient fine-tuning (PEFT/LoRA) techniques.",
+      "Fine-tuned a CodeT5 transformer on a curated 2,000-sample syntax dataset using parameter-efficient fine-tuning (PEFT/LoRA).",
       "Built custom analytical engines evaluating abstract syntax trees (AST) to compute algorithmic complexities natively at the edge.",
       "Integrated backend inference with a lightweight Flask engine and a responsive Node.js frontend, currently writing a research paper on the results."
     ],
@@ -171,9 +171,9 @@ def intercept_telemetry():
     title: "March-Mania-2026",
     subtitle: "Kaggle Tournament Predictor",
     category: "Applied Classification & Feature Engineering",
-    description: "Robust probability classification engine developed for the prestigious Kaggle March Madness tournament analytics competition.",
+    description: "Probability classification model built for the Kaggle March Madness tournament analytics competition.",
     points: [
-      "Engineered dynamic team models leveraging Dean Oliver's legendary 'Four Factors' (shooting, turnovers, rebounding, free throws).",
+      "Engineered team features based on Dean Oliver's 'Four Factors' (shooting, turnovers, rebounding, free throws).",
       "Constructed chronologically expanding rolling evaluation windows to ensure zero forward data leakage across multi-year historical games.",
       "Trained an optimized XGBoost classifier with strict hyperparameter tuning, outputting calibrated probabilities for tournament bracket matches."
     ],
@@ -258,8 +258,8 @@ export const experiences: Experience[] = [
     period: "Jan 2025 – Feb 2025",
     type: "Co-Development",
     description: [
-      "Co-designed system infrastructures for a scalable CBSE Educational Technology hub, scaling the operational database to hold exceeding 10,000 index matrices.",
-      "Drove robust growth, successfully onboarding 1,000+ validated student nodes and establishing school networks with 20+ partner institutions in 37 days."
+      "Co-designed the backend for a CBSE ed-tech platform, scaling the database to over 10,000 records.",
+      "Helped onboard 1,000+ students and 20+ partner schools within the first 37 days."
     ],
     highlightMetric: { value: "1,000+ Users", label: "Gained in 37 Days" },
     technologies: ["System Arch", "Database Modeling", "Node.js", "Express"]
@@ -378,10 +378,10 @@ export const awards: Award[] = [
   },
   {
     id: "award-3",
-    title: "Patent Filed",
-    sub: "Architectural Patent",
-    description: "Currently have an advanced architecture patent under formal review focusing on embedded machine learning model memory optimization pipelines.",
-    date: "Review Pending",
+    title: "Patent Application Filed",
+    sub: "Architecture / IP",
+    description: "Filed a patent application, currently under review, on memory-optimization techniques for embedded machine learning models.",
+    date: "Under Review",
     badge: "Intellectual Property"
   }
 ];

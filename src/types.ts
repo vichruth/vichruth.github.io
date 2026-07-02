@@ -10,7 +10,8 @@ export interface Project {
     value: string;
   }[];
   techStack: string[];
-  link?: string;
+  githubUrl?: string;
+  demoUrl?: string;
   codeHighlight?: {
     filename: string;
     language: string;

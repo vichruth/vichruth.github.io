@@ -9,9 +9,27 @@
 
 /* Custom global overrides for smooth scrolling and clean custom elements */
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 80px;
   background-color: #09090b; /* zinc-950 */
+}
+
+/* Lenis smooth scroll — it drives scrolling, so native smooth-scroll is off.
+   When Lenis is inactive (reduced motion), fall back to native smooth scroll. */
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 /* Custom scrollbar layouts */

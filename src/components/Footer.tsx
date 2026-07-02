@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Mail, Linkedin, Github, FileText, Check, Copy, ExternalLink, Cpu } from "lucide-react";
+import { Mail, FileText, Check, Copy, ExternalLink, Cpu } from "lucide-react";
 
 export default function Footer() {
   const [copied, setCopied] = React.useState<boolean>(false);
@@ -47,6 +47,18 @@ export default function Footer() {
               )}
             </button>
 
+            {/* Résumé Download */}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900/60 hover:border-zinc-700 px-5 py-3.5 text-zinc-200 transition-all font-semibold text-xs active:scale-95 shadow-sm"
+              id="footer-link-resume"
+            >
+              <FileText className="h-4 w-4 text-emerald-400" />
+              <span>Download Résumé</span>
+            </a>
+
             {/* LinkedIn External Link */}
             <a
               href="https://linkedin.com/in/vichruthm9099"
@@ -66,7 +78,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-4 text-xs">
           
           <div className="space-y-3.5 text-left">
-            <h5 className="font-mono text-[10px] font-bold text-zinc-300 tracking-wider uppercase">Pipeline Node</h5>
+            <h5 className="font-mono text-[10px] font-bold text-zinc-300 tracking-wider uppercase">Explore</h5>
             <ul className="space-y-2">
               <li>
                 <a href="#experience" className="hover:text-zinc-300 transition-colors">Professional Experience</a>
@@ -84,13 +96,13 @@ export default function Footer() {
           </div>
 
           <div className="space-y-3.5 text-left">
-            <h5 className="font-mono text-[10px] font-bold text-zinc-300 tracking-wider uppercase">Direct Anchors</h5>
+            <h5 className="font-mono text-[10px] font-bold text-zinc-300 tracking-wider uppercase">Links</h5>
             <ul className="space-y-2">
               <li>
-                <a href="https://linkedin.com/in/vichruthm9099" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">LinkedIn Profile <ExternalLink className="h-2.5 w-2.5 text-zinc-650" /></a>
+                <a href="https://linkedin.com/in/vichruthm9099" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">LinkedIn Profile <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
               </li>
               <li>
-                <a href="https://github.com/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">GitHub Space <ExternalLink className="h-2.5 w-2.5 text-zinc-650" /></a>
+                <a href="https://github.com/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">GitHub <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
               </li>
             </ul>
           </div>

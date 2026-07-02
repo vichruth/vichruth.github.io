@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Github, Linkedin, Cpu } from "lucide-react";
+import { useLenis } from "../lib/SmoothScroll";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = React.useState("home");
+  const lenis = useLenis();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -28,18 +30,18 @@ export default function Navbar() {
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
-    if (element) {
-      const offset = 80; // height of navbar
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
+    if (!element) return;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+    const offset = 80; // height of navbar
+
+    if (lenis) {
+      lenis.scrollTo(element, { offset: -offset });
+      return;
     }
+
+    // Fallback (reduced motion / Lenis inactive)
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
   };
 
   return (
