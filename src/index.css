@@ -56,3 +56,12 @@ html.lenis body {
   background: #3f3f46;
 }
 
+/* Signature emerald→cyan "synapse" gradient used by SectionHeading
+   and hero accents — ties every section to the neural-network identity. */
+.text-gradient-synapse {
+  background: linear-gradient(90deg, #34d399, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+

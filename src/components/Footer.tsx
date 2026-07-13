@@ -19,10 +19,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pb-12 border-b border-zinc-900">
           <div className="md:col-span-6 space-y-4">
             <h3 className="font-sans text-3xl font-bold tracking-tight text-zinc-100">
-              Let's talk specs.
+              Got a model that's too heavy for its hardware?
             </h3>
             <p className="text-sm text-zinc-400 max-w-md leading-relaxed">
-              Seeking research partnerships, Edge-AI consulting opportunities, or Machine Learning roles starting now. Reach out to coordinate live compiler benchmarks.
+              That's literally my favorite problem. Open to ML / Computer Vision research roles, edge AI work, and freelance AI automation — remote or on-site, immediately available.
+            </p>
+            <p className="text-xs text-zinc-500 font-mono">
+              vichruth.victorious@gmail.com · vichruth.m2024@vitstudent.ac.in
             </p>
           </div>
 
@@ -104,22 +107,28 @@ export default function Footer() {
               <li>
                 <a href="https://github.com/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">GitHub <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
               </li>
+              <li>
+                <a href="https://kaggle.com/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">Kaggle <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
+              </li>
+              <li>
+                <a href="https://leetcode.com/u/vichruth9099" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">LeetCode <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
+              </li>
             </ul>
           </div>
 
           <div className="space-y-3.5 text-left">
             <h5 className="font-mono text-[10px] font-bold text-zinc-300 tracking-wider uppercase">Core Specialty</h5>
             <div className="text-[11px] text-zinc-500 leading-relaxed max-w-xs">
-              Optimizing heavyweight convolutional neural networks and state-of-the-art visual transformers for strict on-device embedded platforms.
+              Compressing heavyweight vision transformers and LLMs for strict on-device deployment — the unglamorous part of ML that doesn't trend but actually ships.
             </div>
           </div>
 
           <div className="space-y-3.5 text-left">
             <h5 className="font-mono text-[10px] font-bold text-zinc-200 tracking-wider uppercase flex items-center gap-1.5">
-              <Cpu className="h-3.5 w-3.5 text-emerald-400" /> Edge Engine Ready
+              <Cpu className="h-3.5 w-3.5 text-emerald-400" /> Currently
             </h5>
             <div className="text-[11px] text-zinc-500 leading-relaxed max-w-xs">
-              Natively quantizing deep weights from standard FP32 to low latency memory matrices (FP16 / INT8).
+              First-author IEEE paper pending publication. Patent under review. Trust in loss curves: still recovering.
             </div>
           </div>
 

@@ -2,6 +2,7 @@ import * as React from "react";
 import { Terminal, Cpu, FileCode2, Gauge, Shield, Layers, Copy, Check, ExternalLink } from "lucide-react";
 import { GithubIcon } from "./BrandIcons";
 import { projects } from "../data";
+import SectionHeading from "./SectionHeading";
 import { motion, AnimatePresence } from "motion/react";
 
 export default function Projects() {
@@ -31,18 +32,13 @@ export default function Projects() {
 
   return (
     <div className="space-y-8" id="projects-container-root">
-      {/* Intro */}
-      <div className="flex flex-col space-y-2 md:max-w-xl">
-        <span className="font-semibold text-xs tracking-widest text-emerald-400 uppercase">
-          Autonomous Developments & Systems
-        </span>
-        <h3 className="font-sans text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
-          The Engineering Lineup
-        </h3>
-        <p className="font-sans text-sm text-zinc-500">
-          Click on any project to inspect its mechanical architecture, optimization metrics, and localized source-code snippets.
-        </p>
-      </div>
+      <SectionHeading
+        layer="02"
+        layerName="Projects"
+        title="Big models, small hardware."
+        gradientWord="small hardware"
+        description="Every project here shares one obsession: making something heavyweight fit somewhere it has no business fitting. Click any project to inspect its architecture, metrics, and source snippets."
+      />
 
       {/* Horizontal Tabs selector */}
       <div className="flex overflow-x-auto pb-3 gap-2 scrollbar-none border-b border-zinc-900" id="projects-horizontal-tabs">

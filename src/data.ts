@@ -2,238 +2,311 @@ import { Project, Experience, SkillCategory, Education, Award } from "./types";
 
 export const projects: Project[] = [
   {
+    id: "acqm-reid",
+    title: "ACQM-ReID",
+    subtitle: "Attribute-Conditioned Query Modulation for Person Re-ID",
+    category: "Research · Vision Transformers",
+    description:
+      "A novel attention mechanism for Vision Transformer person re-identification: predicted soft-biometric attributes are injected into the attention Query of the late transformer blocks in a single forward pass — beating the multi-task baseline on Market-1501.",
+    points: [
+      "Designed ACQM on top of TransReID (ViT-B/16), fusing multi-task attribute predictions directly into late-block attention queries.",
+      "Improved Rank-1 from 91.2 → 92.0 and mAP from 79.8 → 80.5 over the ViT-MTL baseline on Market-1501, with full ablations (STAR/DTAP multi-task wrapper, SOQ orthogonal part pooling).",
+      "Built the full research pipeline — attribute data loaders, a multi-task + triplet + BNNeck training engine, and publication figures — as clean extensions of the Torchreid framework."
+    ],
+    metrics: [
+      { label: "Rank-1 (Market-1501)", value: "92.0%" },
+      { label: "mAP", value: "80.5" },
+      { label: "Backbone", value: "ViT-B/16" }
+    ],
+    techStack: ["PyTorch", "TransReID", "Torchreid", "ViT", "Multi-Task Learning", "Triplet Loss"],
+    codeHighlight: {
+      filename: "vit_adapter.py",
+      language: "python",
+      code: `# ACQM: inject predicted attributes into the attention Query
+# of the late transformer blocks — one forward pass, no re-ranking.
+
+class AttributeConditionedBlock(nn.Module):
+    def __init__(self, dim, num_attrs):
+        super().__init__()
+        self.attr_proj = nn.Linear(num_attrs, dim)
+        self.gate = nn.Parameter(torch.zeros(1))  # learn how much to trust attrs
+
+    def modulate_query(self, q, attr_logits):
+        # soft-biometric predictions (gender, bag, sleeve...) -> query space
+        attr_embed = self.attr_proj(attr_logits.softmax(dim=-1))
+        # gated residual: starts at identity, learns modulation strength
+        return q + torch.tanh(self.gate) * attr_embed.unsqueeze(1)
+
+# Result on Market-1501 (single seed):
+#   Baseline ViT-MTL : Rank-1 91.2 | mAP 79.8
+#   + ACQM (ours)    : Rank-1 92.0 | mAP 80.5`
+    }
+  },
+  {
+    id: "edge-id",
+    title: "EdgeID",
+    subtitle: "A Person Has 256 Numbers — Re-ID on Android, Without the Cloud",
+    category: "Edge AI · On-Device Vision",
+    description:
+      "Find your people in a crowd, even when their face isn't visible. A two-stage person detection + re-identification pipeline that compresses every person into a 256-dimensional embedding and runs entirely offline on an Android phone.",
+    points: [
+      "Trained a MobileNetV3-Large embedding network with batch-hard triplet loss on Market-1501, targeting a sub-6 MB on-device model.",
+      "Built the two-stage live pipeline — on-device person detector → 256-D embedding → nearest-neighbour search over the registered group — running frame-by-frame on a phone camera feed.",
+      "Shipped the full Android app in Kotlin: register your group once, then pan the camera across a crowd and get live matches. No photos ever leave the device."
+    ],
+    metrics: [
+      { label: "Embedding", value: "256-D" },
+      { label: "Model Budget", value: "<6 MB" },
+      { label: "Network Calls", value: "Zero" }
+    ],
+    techStack: ["Kotlin", "Android", "MobileNetV3", "Triplet Loss", "PyTorch", "Market-1501"]
+  },
+  {
     id: "neuro-log",
     title: "NeuroLog",
     subtitle: "Edge-Native Semantic Video Search",
-    category: "Computer Vision & Edge AI",
-    description: "100% offline, zero-shot multimodal semantic video search engine designed with strict 6GB VRAM hardware constraints.",
+    category: "Computer Vision · Multimodal",
+    description:
+      "A fully offline, zero-shot video search engine: describe anything in natural language — \"a green taxi\", \"person with a black backpack\" — and find it in hours of raw footage, on a 6 GB laptop GPU.",
     points: [
-      "Engineered a zero-shot video indexing pipeline operating fully on-device within tight budget boundaries.",
-      "Cast model weights to FP16 (half-precision), cutting VRAM usage by ~48% with negligible accuracy loss.",
-      "Built low-latency temporal video ingestion loops using OpenCV and structured a local high-dimensional FAISS vector database for real-time semantic query matching."
+      "Open-vocabulary retrieval with CLIP (ViT-B/32) embeddings instead of a closed-label detector — anything you can describe, you can search, with zero task-specific training.",
+      "Cast the model and input tensors to FP16 to fit the 6 GB VRAM budget with negligible retrieval-quality loss.",
+      "L2-normalized 512-D embeddings in a local FAISS inner-product index (mathematically equivalent to cosine similarity): 0.284 s query latency over a 1,414-frame index, measured on an RTX 4050."
     ],
     metrics: [
-      { label: "Memory Footprint", value: "<6GB VRAM" },
-      { label: "Search Latency", value: "85ms" },
-      { label: "Precision Casting", value: "FP16" }
+      { label: "Query Latency", value: "0.284s" },
+      { label: "VRAM Budget", value: "6 GB" },
+      { label: "Vocabulary", value: "Open (zero-shot)" }
     ],
-    techStack: ["PyTorch", "CLIP", "FAISS", "OpenCV", "NumPy", "Python"],
+    techStack: ["PyTorch", "CLIP", "FAISS", "OpenCV", "Streamlit", "NumPy"],
+    githubUrl: "https://github.com/vichruth/NeuroLog",
     codeHighlight: {
       filename: "search_engine.py",
       language: "python",
-      code: `import torch
-import faiss
-import cv2
+      code: `# FP16 CLIP + normalized FAISS inner-product index.
+# Normalized vectors => inner product == cosine similarity.
 
-# CAST TO FP16 FOR 6GB VRAM HARDWARE CONSTRAINTS
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = clip.load("ViT-B/32", device=device)
-model = model.half() # Convert weights to FP16
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+model = model.half().to("cuda").eval()   # fit the 6GB VRAM budget
 
-def index_video_frames(video_path, faiss_index, batch_size=32):
-    cap = cv2.VideoCapture(video_path)
-    frames, timestamps = [], []
-    
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret: break
-        
-        # Raw OpenCV BGR to RGB Temporal Loop
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frames.append(preprocess(rgb_frame))
-        
-        if len(frames) == batch_size:
-            # Stack and extract PyTorch tensors in half-precision
-            tensor = torch.stack(frames).to(device).half()
-            with torch.no_grad():
-                features = model.encode_image(tensor).cpu().numpy()
-            faiss_index.add(features)
-            frames = []`
+index = faiss.IndexFlatIP(512)
+
+def ingest(video_path, fps=1):
+    for ts, frame in sample_frames(video_path, fps):     # OpenCV temporal loop
+        pixel = preprocess(frame).unsqueeze(0).half().cuda()
+        with torch.no_grad():
+            v = model.get_image_features(pixel_values=pixel)
+        v = torch.nn.functional.normalize(v, dim=-1)
+        index.add(v.cpu().float().numpy())
+
+def search(query, k=3):
+    t = tokenizer(query, return_tensors="pt").to("cuda")
+    q = normalize(model.get_text_features(**t))
+    return index.search(q.cpu().float().numpy(), k)  # 0.284s over 1,414 frames`
     }
   },
   {
-    id: "eelam-flame",
-    title: "Project Eelam Flame",
-    subtitle: "Offline GenAI Secure Pipeline",
-    category: "Generative AI & Privacy Enclave",
-    description: "Secure, zero-trust pipeline built entirely on a localized Gemma 2/4B architecture to process highly sensitive historical testimonies.",
+    id: "classroom-monitor",
+    title: "Attentiveness Monitor",
+    subtitle: "Offline Classroom Edge-AI on a Raspberry Pi",
+    category: "Edge AI · Embedded Deployment",
+    description:
+      "A fully offline system that recognises every enrolled student and classifies attentiveness in real time — on a Raspberry Pi 4's ARM CPU, no GPU, no cloud — then emails teachers a one-page report so they never touch a screen.",
     points: [
-      "Designed a fully on-device environment that blocks all network access, keeping sensitive data confidential.",
-      "Implemented a customized local Retrieval-Augmented Generation (RAG) agent operating against an encrypted vector database.",
-      "Extracted structured semantic metadata and validated information flows using zero outside API calls."
+      "Built the full vision pipeline on ONNX models — YuNet face detection → SFace face recognition → attentive/distracted/drowsy classification — running continuously on an 8 GB Pi 4.",
+      "Automated the entire reporting loop: attendance every 5 seconds, aggregate snapshots every 5 minutes, and a scheduled end-of-period HTML email report with charts and a colour-coded timeline.",
+      "Delivered a Flask admin portal for the whole lifecycle — bulk Excel + photo-ZIP student enrollment, timetable import, SMTP settings, live dashboard, and per-session Excel/SQLite export."
     ],
     metrics: [
-      { label: "Network Activity", value: "0% (Fully Offline)" },
-      { label: "Architecture", value: "Gemma Local" },
-      { label: "Processing Security", value: "Zero-Trust" }
+      { label: "Hardware", value: "Pi 4 (ARM CPU)" },
+      { label: "Cloud Dependency", value: "None" },
+      { label: "Teacher UI", value: "Zero-touch email" }
     ],
-    techStack: ["Gemma 2", "FAISS", "Python", "Cryptography", "Sentence-Transformers"],
-    codeHighlight: {
-      filename: "secure_rag.py",
-      language: "python",
-      code: `# ENCRYPTED OFFLINE VECTOR DB INITIALIZATION
-from cryptography.fernet import Fernet
-import numpy as np
-
-class ZeroTrustRAG:
-    def __init__(self, key: bytes):
-        self.fernet = Fernet(key)
-        self.local_llm = "gemma-2b-it-local"
-        
-    def decrypt_search(self, encrypted_vector_bytes):
-        # Local secure decryption layer before loading to tensor
-        raw_bytes = self.fernet.decrypt(encrypted_vector_bytes)
-        vector = np.frombuffer(raw_bytes, dtype=np.float32)
-        return torch.tensor(vector).half().cuda()`
-    }
-  },
-  {
-    id: "low-param-bug",
-    title: "Low-Parameter AI Bug Detector",
-    subtitle: "Transformer-based Code Assistant",
-    category: "Natural Language Processing",
-    description: "Hybrid Edge-AI system designed to detect and repair Python syntax bugs while performing Time and Space complexity analyses.",
-    points: [
-      "Fine-tuned a CodeT5 transformer on a curated 2,000-sample syntax dataset using parameter-efficient fine-tuning (PEFT/LoRA).",
-      "Built custom analytical engines evaluating abstract syntax trees (AST) to compute algorithmic complexities natively at the edge.",
-      "Integrated backend inference with a lightweight Flask engine and a responsive Node.js frontend, currently writing a research paper on the results."
-    ],
-    metrics: [
-      { label: "Parameters", value: "CodeT5 (LoRA)" },
-      { label: "Inference Latency", value: "110ms" },
-      { label: "Training Dataset", value: "2,000 Samples" }
-    ],
-    techStack: ["CodeT5", "PEFT/LoRA", "Hugging Face", "AST", "Flask", "Node.js"],
-    codeHighlight: {
-      filename: "lora_peft.py",
-      language: "python",
-      code: `from peft import LoraConfig, get_peft_model
-from transformers import AutoModelForSeq2SeqLM
-
-# Low-Parameter Fine-Tuning Setup for Edge Hardware
-base_model = AutoModelForSeq2SeqLM.from_pretrained("Salesforce/codet5-base")
-lora_config = LoraConfig(
-    r=8,
-    lora_alpha=32,
-    target_modules=["q", "v"],
-    lora_dropout=0.05,
-    bias="none",
-    task_type="SEQ_2_SEQ_LM"
-)
-model = get_peft_model(base_model, lora_config)
-print("Active Trainable Parameters:", model.print_trainable_parameters())`
-    }
+    techStack: ["ONNX", "OpenCV", "YuNet", "SFace", "Flask", "Raspberry Pi", "SQLite"],
+    githubUrl: "https://github.com/vichruth/classroom_attentiveness"
   },
   {
     id: "niki-lauda",
     title: "NIKI-LAUDA-AI",
-    subtitle: "Real-Time Race Engineering Pipeline",
-    category: "Telemetry & Time-Series Prediction",
-    description: "High-performance Linux UDP network pipeline to intercept, decode, and model 50Hz binary telemetry data from physics simulators.",
+    subtitle: "Real-Time AI Race Engineer",
+    category: "Time-Series · Telemetry Systems",
+    description:
+      "A tribute to Niki Lauda: an end-to-end system that intercepts a racing sim's 60 Hz binary UDP telemetry, predicts tyre degradation and lap-time delta with an LSTM, and streams it to a live \"Pit Wall\" broadcast dashboard.",
     points: [
-      "Programmed socket architectures to capture high-frequency C-struct packets, decoding complex simulation states under 2ms delay.",
-      "Designed sliding-window data formatters to transform raw continuous parameters into sequential matrices representing tire and aerodynamics status.",
-      "Developed a custom PyTorch LSTM neural network to predict future tire wear and thermal degradation, facilitating dynamic racing strategizing."
+      "Decoded high-frequency C-struct UDP packets into one canonical frame format, with a CSV replay path so the whole stack is demoable without the game running.",
+      "Trained a 2-layer, ~54k-parameter PyTorch LSTM over a rolling 30-frame window to predict lap delta and per-corner tyre wear — small enough to run inference in real time alongside the game.",
+      "Built the Node + Socket.IO Pit Wall dashboard (shift lights, tyre grid, MoTeC-style pedal/RPM traces), with an honest physics-model fallback that reports its active mode: LSTM / HEURISTIC."
     ],
     metrics: [
-      { label: "Pipeline Frequency", value: "50Hz (Real-time)" },
-      { label: "Socket Latency", value: "<1.8ms" },
-      { label: "Model Architecture", value: "PyTorch LSTM" }
+      { label: "Telemetry Rate", value: "60 Hz UDP" },
+      { label: "Model Size", value: "~54k params" },
+      { label: "Prediction Window", value: "30 frames" }
     ],
-    techStack: ["C++ Socket", "PyTorch", "LSTM", "Python Struct", "UDP Pipelines"],
+    techStack: ["PyTorch", "LSTM", "Python Struct", "UDP Sockets", "Node.js", "Socket.IO", "Chart.js"],
+    githubUrl: "https://github.com/vichruth/pit-window-predictor",
     codeHighlight: {
-      filename: "telemetry_socket.py",
+      filename: "telemetry_client.py",
       language: "python",
-      code: `import socket
-import struct
-
-# 50Hz Binary C-Struct UDP Pipeline Interceptor
-UDP_IP = "0.0.0.0"
-UDP_PORT = 20777
-
+      code: `# 60Hz binary C-struct UDP interceptor -> canonical frames
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind((UDP_IP, UDP_PORT))
+sock.bind(("0.0.0.0", 20777))
 
-# format matching the simulator binary layout (float variables)
-struct_format = "<fffffff" 
-
-def intercept_telemetry():
+def live_udp_frames():
     while True:
-        data, addr = sock.recvfrom(1024)
-        if len(data) >= struct.calcsize(struct_format):
-            # Unpack values: speeds, tire temps, suspension values
-            unpacked = struct.unpack(struct_format, data[:struct.calcsize(struct_format)])
-            yield unpacked`
+        data, _ = sock.recvfrom(2048)
+        header = struct.unpack_from("<HBBBBQfIBB", data)
+        if header[5] == PACKET_CAR_TELEMETRY:
+            yield decode_telemetry(data)   # speeds, tyre temps, wear
+
+# Rolling 30-frame window -> 2-layer LSTM (~54k params)
+# outputs: [lap_delta, wear_FL, wear_FR, wear_RL, wear_RR]
+window = deque(maxlen=30)
+for frame in live_udp_frames():
+    window.append(featurize(frame))
+    if len(window) == 30:
+        pred = race_lstm(torch.tensor([list(window)]))
+        socketio.emit("prediction", pred.tolist())  # -> Pit Wall`
     }
   },
   {
-    id: "march-mania",
-    title: "March-Mania-2026",
-    subtitle: "Kaggle Tournament Predictor",
-    category: "Applied Classification & Feature Engineering",
-    description: "Probability classification model built for the Kaggle March Madness tournament analytics competition.",
+    id: "pseudo-compiler",
+    title: "Pseudo Is All You Need",
+    subtitle: "A Pseudocode Compiler That Learns How You Type",
+    category: "Compilers · Systems + ML",
+    description:
+      "A pseudocode compiler with a dual-backend architecture — one shared IR executed by either a bytecode VM or ahead-of-time compiled C — plus an ML input layer that learns a user's personal typing patterns to tell real syntax errors from handwriting.",
     points: [
-      "Engineered team features based on Dean Oliver's 'Four Factors' (shooting, turnovers, rebounding, free throws).",
-      "Constructed chronologically expanding rolling evaluation windows to ensure zero forward data leakage across multi-year historical games.",
-      "Trained an optimized XGBoost classifier with strict hyperparameter tuning, outputting calibrated probabilities for tournament bracket matches."
+      "Designed a single shared intermediate representation with two genuinely different execution strategies: a bytecode VM for fast iteration and debugging, and AOT compilation to C for real performance.",
+      "Building an adaptive input layer that learns per-user typos, abbreviations, and habitual shorthand, correcting ambiguous input from context instead of failing on the first unparseable token.",
+      "Full classical front-end — lexer, parser, IR lowering — engineered so both backends share every phase above code generation."
     ],
     metrics: [
-      { label: "Primary Model", value: "XGBoost" },
-      { label: "Evaluation Scheme", value: "Expanding Window" },
-      { label: "Key Predictor", value: "Four Factors" }
+      { label: "Backends", value: "VM + AOT→C" },
+      { label: "Front-End", value: "Shared IR" },
+      { label: "Input Layer", value: "ML-adaptive" }
     ],
-    techStack: ["XGBoost", "Scikit-Learn", "Pandas", "NumPy", "Kaggle Platforms"]
+    techStack: ["Compilers", "Bytecode VM", "C Codegen", "Lexer/Parser", "ML Correction", "Python"]
+  },
+  {
+    id: "eelam-flame",
+    title: "Project Eelam Flame",
+    subtitle: "Offline GenAI Pipeline for Sensitive Testimonies",
+    category: "Generative AI · Privacy",
+    description:
+      "A zero-trust, fully offline pipeline built on a local Gemma architecture to process highly sensitive historical testimonies — preserving the linguistic nuances of the Eelam Tamil dialect with zero outside API calls.",
+    points: [
+      "Designed a fully on-device environment that blocks all network access, keeping sensitive testimony data confidential end to end.",
+      "Implemented a local Retrieval-Augmented Generation agent operating against an encrypted vector database.",
+      "Extracted structured semantic metadata and validated every information flow offline — nothing leaves the machine."
+    ],
+    metrics: [
+      { label: "Network Activity", value: "0% (offline)" },
+      { label: "LLM", value: "Gemma, local" },
+      { label: "Vector DB", value: "Encrypted" }
+    ],
+    techStack: ["Gemma", "FAISS", "Cryptography", "Sentence-Transformers", "Python"],
+    githubUrl: "https://github.com/vichruth/Eelam-Flame",
+    codeHighlight: {
+      filename: "secure_rag.py",
+      language: "python",
+      code: `# Encrypted, fully-offline vector store for a local RAG agent
+from cryptography.fernet import Fernet
+
+class ZeroTrustRAG:
+    def __init__(self, key: bytes):
+        self.fernet = Fernet(key)
+        self.llm = load_local("gemma-2b-it")   # no API, no network
+
+    def decrypt_search(self, encrypted_vec: bytes):
+        raw = self.fernet.decrypt(encrypted_vec)
+        vector = np.frombuffer(raw, dtype=np.float32)
+        return torch.from_numpy(vector.copy()).half()`
+    }
   },
   {
     id: "ffcs-buddy",
     title: "FFCS-Buddy",
-    subtitle: "FastAPI Hybrid Search Engine",
-    category: "NLP & Course Recommender",
-    description: "Award-winning academic search system built during VIT's Hackademia to assist students in indexing and designing optimized course schedules.",
+    subtitle: "Hybrid Lexical + Semantic Course Search",
+    category: "NLP · Search Systems",
+    description:
+      "Award-winning course search engine built at VIT's Hackademia: a hybrid retrieval system that merges TF-IDF lexical lookup with dense transformer embeddings to help students build optimal schedules.",
     points: [
-      "Created a hybrid searching system merging TF-IDF lexical lookup and dense vector embeddings from the 'all-MiniLM-L6-v2' transformer.",
-      "Served extremely fast recommendations using a highly optimized FastAPI router, drastically lowering query times for thousands of students.",
-      "Captured the 2nd Prize at Hackademia (graVITas'25) for backend speed and modular architecture."
+      "Fused TF-IDF lexical scoring with 384-D dense embeddings from all-MiniLM-L6-v2 for robust matching on both exact codes and fuzzy natural-language queries.",
+      "Served sub-15 ms course queries from an optimized FastAPI router.",
+      "Won 2nd Prize at Hackademia (graVITas'25) for the backend search architecture."
     ],
     metrics: [
-      { label: "Course Queries", value: "<15ms" },
-      { label: "Dense Embeddings", value: "384 Dimensions" },
-      { label: "Award Status", value: "2nd Prize Hack" }
+      { label: "Query Latency", value: "<15 ms" },
+      { label: "Embeddings", value: "384-D MiniLM" },
+      { label: "Result", value: "2nd Prize" }
     ],
-    techStack: ["FastAPI", "Sentence-Transformers", "TF-IDF", "Uvicorn", "Python"]
+    techStack: ["FastAPI", "Sentence-Transformers", "TF-IDF", "Uvicorn", "Python"],
+    githubUrl: "https://github.com/vichruth/FFCS_Buddy"
   }
 ];
 
 export const experiences: Experience[] = [
   {
+    id: "nit-trichy",
+    company: "NIT Tiruchirappalli",
+    role: "Summer Research Intern — LLM & Multimodal AI",
+    location: "Tiruchirappalli, India · On-site",
+    period: "Jun 2026 – Jul 2026",
+    type: "Research",
+    description: [
+      "Designed and built a fully offline, edge-AI classroom attentiveness monitor under Dr. B. Janet — real-time computer vision for automated attendance and engagement analysis on a Raspberry Pi, zero cloud dependency.",
+      "Built the face detection + recognition pipeline (OpenCV YuNet, SFace 128-D embeddings, cosine similarity) and a multimodal YOLO11-pose + MediaPipe engagement layer (gaze, drowsiness via EAR, hand-raise, emotion) reaching ~78% attentive-classification accuracy.",
+      "Shipped the full stack solo: Flask admin portal (SQLite, Excel bulk import, live monitoring), automated SMTP report delivery verified end-to-end, and a security review remediating stored XSS, CSRF, and session-management vulnerabilities.",
+      "Benchmarked the edge system against a cloud VLM baseline to quantify the accuracy–latency trade-off; findings feeding a journal paper in preparation."
+    ],
+    highlightMetric: { value: "100% Offline", label: "Raspberry Pi Deployment" },
+    technologies: ["ONNX Runtime", "OpenCV", "YOLO11-pose", "MediaPipe", "Flask", "Raspberry Pi"]
+  },
+  {
     id: "iiit-kottayam",
     company: "IIIT Kottayam",
-    role: "Research Intern",
-    location: "Hybrid",
-    period: "May 2026 – Present",
-    type: "Internship",
+    role: "Summer Research Intern — CV & Model Compression",
+    location: "Kottayam, India · Hybrid",
+    period: "May 2026 – Jun 2026",
+    type: "Research",
     description: [
-      "Conducting extensive research and empirical evaluation on state-of-the-art Transformer-based architectures (TransReID) and lightweight CNN models for robust pedestrian identification.",
-      "Developing quantization and pruning workflows to compress complex vision parameters, targeting efficient operations on highly resource-constrained edge systems.",
-      "Actively bridging complex mathematical models in deep learning with target hardware compilers."
+      "Selected to research Transformer-based person re-identification under Dr. Sridhar Raj S: extended TransReID (ViT-B/16) with ACQM, a novel attribute-conditioned attention mechanism, lifting Rank-1 to 92.0% on Market-1501.",
+      "Diagnosed and resolved three silent architectural failures in the evaluation pipeline — zero crashes, zero errors, accuracy quietly suppressed — by distrusting healthy-looking loss curves and reading intermediate state directly.",
+      "Ran systematic ablations across multi-task attribute learning, orthogonal part pooling, and triplet + BNNeck training regimes, all within a 6 GB VRAM budget on consumer hardware.",
+      "Patent filed; first-author paper pending publication in an IEEE journal."
     ],
-    highlightMetric: { value: "State of Art", label: "TransReID Focus" },
-    technologies: ["PyTorch", "TransReID", "Model Compression", "Edge Compilers"]
+    highlightMetric: { value: "IEEE Paper", label: "Pending Publication · First Author" },
+    technologies: ["PyTorch", "TransReID", "ViT", "Model Compression", "Torchreid"]
+  },
+  {
+    id: "freelance",
+    company: "Independent Client Projects",
+    role: "Freelance AI & Automation Engineer",
+    location: "Remote",
+    period: "2025 – Present",
+    type: "Production Systems",
+    description: [
+      "Operate a live 24/7 B2B lead-generation and enrichment pipeline for a migration-services client: 8-phase automation covering scraping, AI website audits via GPT-4o vision, personalised outreach, reply classification, proposals, Stripe payments, and onboarding.",
+      "Self-hosted n8n + PostgreSQL with 15+ API integrations; the operator manages the entire funnel from a phone via Telegram approval flows.",
+      "All client data handled under strict on-premise / zero-external-API constraints where sensitivity requires it. Real users, real payments, real \"why is it broken at 2 AM\" energy."
+    ],
+    highlightMetric: { value: "24/7 Live", label: "Production System in Operation" },
+    technologies: ["n8n", "PostgreSQL", "GPT-4o Vision", "Stripe", "Telegram Bots", "REST APIs"]
   },
   {
     id: "kalkini",
-    company: "KalkiNi (AI Surveillance System)",
+    company: "KalkiNi (AI Surveillance)",
     role: "Machine Learning Intern",
     location: "Vellore, India",
     period: "Feb 2025 – Sep 2025",
     type: "Internship",
     description: [
-      "Structured and deployed comprehensive processing pipelines utilizing NumPy and Pandas, transforming multi-threaded video stream data into optimized model structures.",
-      "Trained and fine-tuned deep learning classifiers focused on live threat profiling, optimizing feed-forward feature filters.",
-      "Designed advanced multi-task models by applying Transfer Learning, yielding notable gains in operational precision while reducing computing constraints."
+      "Built processing pipelines with NumPy and Pandas that transform multi-threaded video stream data into optimized model inputs.",
+      "Trained and fine-tuned deep learning classifiers for live threat profiling, optimizing feed-forward feature filters.",
+      "Applied transfer learning to multi-task models, improving precision while cutting compute — a 35% pipeline speedup."
     ],
     highlightMetric: { value: "35% Speedup", label: "Surveillance Pipeline" },
-    technologies: ["Pandas", "NumPy", "PyTorch", "OpenCV", "Transfer Learning"]
+    technologies: ["PyTorch", "OpenCV", "Transfer Learning", "Pandas", "NumPy"]
   },
   {
     id: "cloudstier",
@@ -243,12 +316,12 @@ export const experiences: Experience[] = [
     period: "May 2025 – Jun 2025",
     type: "Internship",
     description: [
-      "Conceptualized and deployed a local custom NLP chatbot served via the Django web framework executing lightweight Phi model structures.",
-      "Managed pipeline orchestration involving supervised fine-tuning, strict prompt alignments, and structured output formatting.",
-      "Tested and verified web endpoints utilizing Postman for optimal network exchange."
+      "Built and deployed an on-premises NLP chatbot on the Django web framework running lightweight Phi models locally.",
+      "Owned the pipeline end to end: supervised fine-tuning, prompt alignment, and structured output formatting.",
+      "Verified web endpoints with Postman for reliable network exchange."
     ],
     highlightMetric: { value: "Phi Model", label: "On-Premises Chatbot" },
-    technologies: ["Django", "Phi-Model", "Prompt Engineering", "Postman", "WSGI"]
+    technologies: ["Django", "Phi", "Prompt Engineering", "Postman", "WSGI"]
   },
   {
     id: "boardly",
@@ -262,7 +335,34 @@ export const experiences: Experience[] = [
       "Helped onboard 1,000+ students and 20+ partner schools within the first 37 days."
     ],
     highlightMetric: { value: "1,000+ Users", label: "Gained in 37 Days" },
-    technologies: ["System Arch", "Database Modeling", "Node.js", "Express"]
+    technologies: ["System Architecture", "Database Modeling", "Node.js", "Express"]
+  },
+  {
+    id: "padasalai",
+    company: "Padasalai",
+    role: "App Developer",
+    location: "Remote",
+    period: "Nov 2024 – Jan 2026",
+    type: "Part-Time",
+    description: [
+      "Maintained the web app for Tamil Nadu's No.1 educational platform, building quiz and study tools serving 10th and 12th standard students.",
+      "Recognised with an award from the Padasalai and Sura Publications leadership for the app work."
+    ],
+    highlightMetric: { value: "TN's #1", label: "Educational Platform" },
+    technologies: ["Web Apps", "WordPress", "Software Design"]
+  },
+  {
+    id: "masters-union",
+    company: "Masters' Union",
+    role: "AI Campus Ambassador",
+    location: "India · Hybrid",
+    period: "Apr 2026 – Present",
+    type: "Ambassador",
+    description: [
+      "Leading campus-wide initiatives promoting Masters' Union AI seminars and education programs — strategic outreach, community management, and verified participation drives."
+    ],
+    highlightMetric: { value: "Campus-Wide", label: "AI Education Outreach" },
+    technologies: ["Community Management", "Strategic Growth"]
   },
   {
     id: "electronics-club",
@@ -270,13 +370,13 @@ export const experiences: Experience[] = [
     role: "Junior Core Member",
     location: "Vellore, India",
     period: "Jan 2026 – Present",
-    type: "Leadership / Academic Subgroup",
+    type: "Leadership",
     description: [
-      "Directing developmental pipelines merging microcontrollers with tiny neural model structures (TinyML).",
-      "Mentored peers on loading and flashing optimized C++ tensor algorithms onto embedded environments to establish localized automation grids."
+      "Directing projects that merge microcontrollers with tiny neural models (TinyML).",
+      "Mentoring peers on flashing optimized C++ tensor code onto embedded boards for localized automation."
     ],
-    highlightMetric: { value: "TinyML", label: "Hardware-AI Integrations" },
-    technologies: ["C++", "C", "TinyML", "Microcontrollers", "Edge Deployments"]
+    highlightMetric: { value: "TinyML", label: "Hardware-AI Integration" },
+    technologies: ["C++", "TinyML", "Microcontrollers", "Embedded"]
   }
 ];
 
@@ -286,8 +386,9 @@ export const skillCategories: SkillCategory[] = [
     title: "Programming Languages",
     iconName: "Code2",
     skills: [
-      { name: "Python", context: "Primary research & ML system engineering", vibe: "Core" },
-      { name: "C++", context: "Low-latency firmware & hardware communications", vibe: "Hardware" },
+      { name: "Python", context: "Primary language for research, training pipelines & ML systems", vibe: "Core" },
+      { name: "C++", context: "Low-latency systems, embedded firmware & compiler backends", vibe: "Hardware" },
+      { name: "Kotlin", context: "On-device Android AI apps — camera pipelines to inference", vibe: "Mobile" },
       { name: "Java", context: "System integration & algorithmic development", vibe: "Familiar" }
     ]
   },
@@ -296,35 +397,35 @@ export const skillCategories: SkillCategory[] = [
     title: "Machine Learning & AI",
     iconName: "BrainCircuit",
     skills: [
-      { name: "PyTorch & TensorFlow", context: "Neural Network architecture design & custom training", vibe: "Core" },
-      { name: "Decoder-Only LLMs", context: "Local LoRA, PEFT fine-tuning, and offline RAG environments", vibe: "Optimization" },
-      { name: "Computer Vision", context: "State-of-the-Art CNNs, Person Re-ID, and CLIP vision embeddings", vibe: "Core" },
-      { name: "Edge AI / TinyML", context: "Quantizing weights to FP16/INT8 for strict hardware parameters", vibe: "Optimization" },
-      { name: "NLP", context: "Sentence Transformers structural cosine similarity search", vibe: "Core" },
-      { name: "Classification Engines", context: "XGBoost, Scikit-Learn validation and feature extraction & selection", vibe: "Core" }
+      { name: "Vision Transformers & Re-ID", context: "TransReID, attribute-conditioned attention, triplet + BNNeck training", vibe: "Research" },
+      { name: "PyTorch & TensorFlow", context: "Custom architectures, training engines & loss design", vibe: "Core" },
+      { name: "Model Compression", context: "FP16/INT8 quantization, pruning, LoRA/PEFT — fitting models to real hardware", vibe: "Specialty" },
+      { name: "Multimodal / CLIP", context: "Zero-shot open-vocabulary retrieval, image-text embedding spaces", vibe: "Core" },
+      { name: "Local LLMs & RAG", context: "Gemma/Phi on-device, offline RAG over encrypted vector stores", vibe: "Core" },
+      { name: "Time-Series & Classical ML", context: "LSTMs on live telemetry, XGBoost with leakage-safe evaluation", vibe: "Core" }
     ]
   },
   {
     id: "tools",
-    title: "Libraries, Databases & OS",
+    title: "Libraries, Runtimes & OS",
     iconName: "Cpu",
     skills: [
-      { name: "OpenCV", context: "High-frequency frame buffering and temporal color conversion loops", vibe: "Core" },
-      { name: "FAISS", context: "Ultra-fast high-dimensional vector search index databases", vibe: "Optimization" },
-      { name: "Hugging Face Ecosystem", context: "Model Hub deployment, PEFT fine-tune and tokenizer alignment", vibe: "Core" },
-      { name: "NumPy & Pandas", context: "Massive matrix calculations, chronologically shifting datasets", vibe: "Core" },
-      { name: "Linux (Ubuntu)", context: "Kernel command structures, network pipelines, resource monitoring", vibe: "Hardware" },
-      { name: "Git", context: "Iterative branch management and collaborative pipeline structures", vibe: "Core" }
+      { name: "ONNX Runtime", context: "Deploying vision models on ARM CPUs — Raspberry Pi & Android", vibe: "Edge" },
+      { name: "OpenCV", context: "High-frequency frame ingestion, YuNet/SFace pipelines", vibe: "Core" },
+      { name: "FAISS", context: "Normalized inner-product indexes for real-time vector search", vibe: "Core" },
+      { name: "Hugging Face", context: "Transformers, PEFT fine-tuning, tokenizer alignment", vibe: "Core" },
+      { name: "NumPy & Pandas", context: "Matrix computation and chronologically-safe dataset handling", vibe: "Core" },
+      { name: "Linux (Ubuntu)", context: "Daily driver — networking, sockets, resource monitoring, deployment", vibe: "Hardware" }
     ]
   },
   {
     id: "frameworks",
-    title: "Web Backends",
+    title: "Backends & Serving",
     iconName: "Network",
     skills: [
-      { name: "FastAPI & Flask", context: "High performance REST microservices for deep learning inference servers", vibe: "Core" },
-      { name: "Django", context: "Solid monolithic architectures supporting on-premise localized LLM chat pipelines", vibe: "Core" },
-      { name: "Node.js", context: "V8 platform scaling for interface-backend handshakes", vibe: "Familiar" }
+      { name: "FastAPI & Flask", context: "REST microservices for ML inference & admin portals", vibe: "Core" },
+      { name: "Django", context: "Monolithic backends hosting on-premise LLM chat pipelines", vibe: "Core" },
+      { name: "Node.js + Socket.IO", context: "Real-time dashboards streaming live model predictions", vibe: "Core" }
     ]
   }
 ];
@@ -336,12 +437,12 @@ export const educations: Education[] = [
     location: "Vellore, India",
     degree: "Bachelor of Technology in Computer Science and Engineering",
     period: "Jul 2024 – Jul 2028 (Expected)",
-    grade: "8.05",
+    grade: "7.5",
     gradeLabel: "CGPA",
     details: [
-      "Coursework: Stanford Machine Learning Specialization",
-      "Active Junior Core Member of The Electronics Club, leading ML-hardware architectures",
-      "Specializing deep in on-device AI compilers, high-accuracy computer vision, and predictive statistics."
+      "Research internships completed at two national institutes — NIT Tiruchirappalli and IIIT Kottayam — alongside coursework.",
+      "Certifications: Machine Learning Specialization (DeepLearning.AI, Andrew Ng), VIT Generative AI Bootcamp, AI to Vision (IIIT Kottayam), App Development Workshop (IIT Madras).",
+      "Junior Core Member of The Electronics Club — ML-hardware pipelines, TinyML, embedded C++ mentoring."
     ]
   },
   {
@@ -353,35 +454,59 @@ export const educations: Education[] = [
     grade: "85%",
     gradeLabel: "Grade",
     details: [
-      "Rigorous core curriculum specializing in Physics, Chemistry, and Advanced Mathematics.",
-      "Developed early programs integrating numerical computing libraries and matrix geometry."
+      "Core curriculum in Physics, Chemistry, and Advanced Mathematics.",
+      "Early programs integrating numerical computing libraries and matrix geometry."
     ]
   }
 ];
 
 export const awards: Award[] = [
   {
-    id: "award-1",
-    title: "2nd Runner-Up",
-    sub: "National Ideathon (Team V-RACING)",
-    description: "Architected \"Pre-Cog Brakes\", a prospective torque vectoring system using driver telemetry data stream modeling.",
-    date: "Oct 2024",
-    badge: "National Level"
+    id: "ieee-paper",
+    title: "First-Author Paper — Pending Publication",
+    sub: "IEEE Journal · IIIT Kottayam",
+    description: "\"Person Re-Identification using Multi-Task Vision Transformers with Domain Adversarial Training\" — Vichruth M, Dr. Sridhar Raj S. Covers the multi-task ViT architecture, domain adversarial training, and a systematic silent-failure diagnosis methodology.",
+    date: "2026",
+    badge: "Research Publication"
   },
   {
-    id: "award-2",
+    id: "neurogolf-badge",
+    title: "Kaggle Research Competitor",
+    sub: "NeuroGolf 2026 · IJCAI-ECAI Competitions Track",
+    description: "Earned the Research Competitor badge designing minimal, exactly-correct ONNX networks that solve ARC-AGI reasoning tasks.",
+    date: "Jul 2026",
+    badge: "Kaggle"
+  },
+  {
+    id: "patent",
+    title: "Patent Application Filed",
+    sub: "Memory Optimization for Embedded ML",
+    description: "Filed a patent application, currently under review, on memory-optimization techniques for embedded machine learning models.",
+    date: "Under Review",
+    badge: "Intellectual Property"
+  },
+  {
+    id: "hackademia",
     title: "2nd Prize",
     sub: "Hackademia (graVITas'25)",
-    description: "Awarded for the unique backend NLP course filtering search architecture of FFCS-Buddy using sentence-transformers.",
+    description: "Awarded for FFCS-Buddy's hybrid lexical + semantic course search backend built on sentence-transformers.",
     date: "Feb 2025",
     badge: "VIT Technical Festival"
   },
   {
-    id: "award-3",
-    title: "Patent Application Filed",
-    sub: "Architecture / IP",
-    description: "Filed a patent application, currently under review, on memory-optimization techniques for embedded machine learning models.",
-    date: "Under Review",
-    badge: "Intellectual Property"
+    id: "ideathon",
+    title: "2nd Runner-Up",
+    sub: "National Ideathon (Team V-RACING)",
+    description: "Architected \"Pre-Cog Brakes\", a prospective torque-vectoring system modeled on driver telemetry data streams.",
+    date: "Oct 2024",
+    badge: "National Level"
+  },
+  {
+    id: "freuid",
+    title: "Active Competitor",
+    sub: "FREUID Challenge 2026 · IJCAI-ECAI",
+    description: "Identity-document fraud detection (Microblink / 35th IJCAI): physical manipulations, GenAI-driven edits, and print-and-capture forgeries, evaluated on a private held-out test set.",
+    date: "2026",
+    badge: "Ongoing"
   }
 ];

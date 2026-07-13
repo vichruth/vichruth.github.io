@@ -1,9 +1,19 @@
 import { BookOpen, GraduationCap, Award, Calendar, Milestone, ShieldCheck } from "lucide-react";
 import { educations, awards } from "../data";
+import SectionHeading from "./SectionHeading";
 
 export default function EducationAwards() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12" id="education-awards-section">
+    <div className="space-y-10" id="education-awards-section">
+      <SectionHeading
+        layer="05"
+        layerName="Education & Honors"
+        title="Credentials & recognition."
+        gradientWord="recognition"
+        description="B.Tech at VIT Vellore, a first-author IEEE paper pending publication, a patent under review, and a trail of competition results."
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
       
       {/* Left Column: Education (6 cols) */}
       <div className="lg:col-span-6 space-y-6">
@@ -86,7 +96,7 @@ export default function EducationAwards() {
               )}
 
               <div className="p-3 bg-zinc-900/60 border border-zinc-850 rounded-xl group-hover:border-emerald-500/40 transition-colors shrink-0">
-                {awr.id === "award-3" ? (
+                {awr.id === "patent" ? (
                   <ShieldCheck className="h-5 w-5 text-purple-400" />
                 ) : (
                   <Milestone className="h-5 w-5 text-emerald-400" />
@@ -112,6 +122,7 @@ export default function EducationAwards() {
         </div>
       </div>
 
+      </div>
     </div>
   );
 }

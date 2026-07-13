@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronDown, Cpu, Sparkles, Code, Brain, Zap } from "lucide-react";
+import { ChevronDown, Cpu, Code, Brain, Zap } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
 
 import Navbar from "./components/Navbar";
@@ -12,6 +12,7 @@ import InteractiveEdgeStudio from "./components/InteractiveEdgeStudio";
 import EducationAwards from "./components/EducationAwards";
 import Footer from "./components/Footer";
 import NeuralNetworkBackground from "./components/NeuralNetworkBackground";
+import SectionHeading from "./components/SectionHeading";
 
 export default function App() {
   const heroRef = React.useRef<HTMLElement>(null);
@@ -60,16 +61,19 @@ export default function App() {
           className="mx-auto max-w-7xl w-full text-center space-y-8 z-10"
         >
 
-          {/* Slogan Pill */}
+          {/* Open-to-work Pill */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mx-auto inline-flex items-center space-x-2.5 rounded-full border border-zinc-800 bg-zinc-900/40 px-4 py-1.5 backdrop-blur-sm"
+            className="mx-auto inline-flex items-center space-x-2.5 rounded-full border border-emerald-900/60 bg-emerald-950/20 px-4 py-1.5 backdrop-blur-sm"
           >
-            <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-300">
-              AI SURVEILLANCE & EDGE HARDWARE OPTIMIZATION
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-emerald-300">
+              OPEN TO WORK · ML / CV RESEARCH · EDGE AI · AI AUTOMATION
             </span>
           </motion.div>
 
@@ -91,7 +95,8 @@ export default function App() {
               transition={{ duration: 0.8, delay: 0.35 }}
               className="mx-auto max-w-3xl font-sans text-xl font-semibold tracking-tight text-zinc-400 sm:text-2xl"
             >
-              High-efficiency machine learning. Deployed natively at the edge.
+              I make heavyweight AI models run on hardware that has{" "}
+              <span className="text-gradient-synapse">no business running them</span>.
             </motion.h2>
           </div>
 
@@ -102,7 +107,7 @@ export default function App() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="mx-auto max-w-2xl font-sans text-sm md:text-base text-zinc-500 leading-relaxed font-medium"
           >
-            Computer Science &amp; Engineering student specializing in building predictive models, transformer-based architectures, and optimizing heavyweight AI pipelines to execute natively on restricted VRAM budgets.
+            CSE undergrad at VIT Vellore with research internships at two national institutes (NIT Trichy, IIIT Kottayam), a first-author paper pending publication in an IEEE journal, and a live 24/7 production automation system for a real client. Most of my work happens inside a 6GB VRAM budget — my GPU and I have trust issues, but a working relationship.
           </motion.p>
 
           {/* Inline Specs Row */}
@@ -114,22 +119,22 @@ export default function App() {
           >
             <div className="flex items-center space-x-1.5">
               <Cpu className="h-3.5 w-3.5 text-emerald-400" />
-              <span>&lt;6GB VRAM</span>
+              <span>&lt;6GB VRAM BUDGET</span>
             </div>
             <span className="text-zinc-800 hidden sm:inline">•</span>
             <div className="flex items-center space-x-1.5">
               <Code className="h-3.5 w-3.5 text-purple-400" />
-              <span>FP16 QUANTIZATION</span>
+              <span>IEEE PAPER PENDING</span>
             </div>
             <span className="text-zinc-800 hidden sm:inline">•</span>
             <div className="flex items-center space-x-1.5">
               <Brain className="h-3.5 w-3.5 text-blue-400" />
-              <span>OFFLINE RAG ENCLAVE</span>
+              <span>100% OFFLINE ON A PI</span>
             </div>
             <span className="text-zinc-800 hidden sm:inline">•</span>
             <div className="flex items-center space-x-1.5">
               <Zap className="h-3.5 w-3.5 text-amber-400" />
-              <span>50HZ telemetry</span>
+              <span>24/7 PROD AUTOMATION</span>
             </div>
           </motion.div>
 
@@ -179,16 +184,14 @@ export default function App() {
       {/* Section: Interactive EdgeAI Studio Sandbox */}
       <section id="simulator" className="bg-zinc-950 py-20 px-6 border-t border-zinc-900/60 bg-[radial-gradient(#1f293708_1px,transparent_1px)] bg-[size:2rem_2rem]">
         <div className="mx-auto max-w-7xl">
-          <Reveal className="mb-8 flex flex-col space-y-2">
-            <span className="font-semibold text-xs tracking-widest text-emerald-400 uppercase">
-              Embedded Hardware Benchmarks
-            </span>
-            <h3 className="font-sans text-3xl font-bold tracking-tight text-white md:text-4xl">
-              Physical Compilation Deck
-            </h3>
-            <p className="font-sans text-sm text-zinc-500 max-w-md">
-              Interact directly with precision sliders and architecture metrics to inspect core compilation diagnostics, latency ratios, and heat logs.
-            </p>
+          <Reveal className="mb-8">
+            <SectionHeading
+              layer="04"
+              layerName="Edge Simulator"
+              title="Try the trade-offs yourself."
+              gradientWord="trade-offs"
+              description="Interact with precision sliders and architecture metrics to feel the quantization trade-offs I work with daily — latency, memory, and accuracy under a hard hardware budget."
+            />
           </Reveal>
           <Reveal delay={0.1}>
             <InteractiveEdgeStudio />

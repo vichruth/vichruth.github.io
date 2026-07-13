@@ -1,21 +1,17 @@
 import { MapPin, Calendar, Briefcase, Zap, BadgeHelp } from "lucide-react";
 import { experiences } from "../data";
+import SectionHeading from "./SectionHeading";
 
 export default function ExperienceTimeline() {
   return (
     <div className="space-y-8" id="experience-timeline-container">
-      {/* Visual Header */}
-      <div className="flex flex-col space-y-2 max-w-xl">
-        <span className="font-semibold text-xs tracking-widest text-emerald-400 uppercase">
-          Chronological Ingress
-        </span>
-        <h3 className="font-sans text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
-          Professional Log
-        </h3>
-        <p className="font-sans text-sm text-zinc-500">
-          A review of research posts, industry internships, and product deployments translating AI logic into edge parameters.
-        </p>
-      </div>
+      <SectionHeading
+        layer="01"
+        layerName="Experience"
+        title="Where the training happened."
+        gradientWord="training"
+        description="Two national research institutes, three industry internships, and a live production system for a real client — research posts and shipped systems, in reverse chronological order."
+      />
 
       {/* Timeline List */}
       <div className="relative border-l border-zinc-900 pl-6 sm:pl-8 space-y-12 py-4" id="timeline-scroll-axis">

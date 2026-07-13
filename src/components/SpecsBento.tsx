@@ -1,5 +1,6 @@
 import { Code2, BrainCircuit, Cpu, Network, CheckCircle2 } from "lucide-react";
 import { skillCategories } from "../data";
+import SectionHeading from "./SectionHeading";
 
 export default function SpecsBento() {
   // Direct mapping of icon string to Lucide React component
@@ -20,17 +21,13 @@ export default function SpecsBento() {
 
   return (
     <div className="space-y-6" id="specs-bento-container">
-      <div className="flex flex-col space-y-2">
-        <h3 className="font-sans text-xs font-semibold tracking-widest text-emerald-400 uppercase">
-          Silicon & Algorithmic Blueprint
-        </h3>
-        <h4 className="font-sans text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
-          Technical Specifications
-        </h4>
-        <p className="font-sans text-sm text-zinc-500 max-w-xl">
-          A granular breakdown of languages, deep learning frameworks, and embedded platform libraries tailored for edge execution.
-        </p>
-      </div>
+      <SectionHeading
+        layer="03"
+        layerName="Tech Specs"
+        title="The toolchain."
+        gradientWord="toolchain"
+        description="Languages, deep learning frameworks, and embedded platform libraries — the granular breakdown, tuned for edge execution."
+      />
 
       {/* Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-4">
