@@ -102,7 +102,7 @@ export default function Footer() {
             <h5 className="font-mono text-[10px] font-bold text-zinc-300 tracking-wider uppercase">Links</h5>
             <ul className="space-y-2">
               <li>
-                <a href="https://linkedin.com/in/vichruthm9099" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">LinkedIn Profile <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
+                <a href="https://linkedin.com/in/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">LinkedIn Profile <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
               </li>
               <li>
                 <a href="https://github.com/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">GitHub <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
@@ -111,7 +111,7 @@ export default function Footer() {
                 <a href="https://kaggle.com/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">Kaggle <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
               </li>
               <li>
-                <a href="https://leetcode.com/u/vichruth9099" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">LeetCode <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
+                <a href="https://leetcode.com/u/vichruth" target="_blank" rel="noreferrer" referrerPolicy="no-referrer" className="hover:text-zinc-300 transition-colors flex items-center gap-1">LeetCode <ExternalLink className="h-2.5 w-2.5 text-zinc-600" /></a>
               </li>
             </ul>
           </div>
