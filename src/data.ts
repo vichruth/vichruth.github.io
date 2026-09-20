@@ -43,6 +43,26 @@ class AttributeConditionedBlock(nn.Module):
     }
   },
   {
+    id: "shrinklens",
+    title: "ShrinkLens",
+    subtitle: "Model Compression Toolkit — Published on PyPI",
+    category: "Model Compression · Open Source",
+    description:
+      "An open-source CLI that quantizes a Vision Transformer image classifier across FP32 → FP16 → INT8 → INT4 and reports live-measured model size, accuracy, and inference latency at every step. No estimates, no mocks.",
+    points: [
+      "One command walks a ViT through four precision levels and prints a side-by-side trade-off table.",
+      "Every number — size on disk, top-1 accuracy, latency — is measured at runtime on the user's own hardware.",
+      "Packaged and published on PyPI; installable with pip install shrinklens."
+    ],
+    metrics: [
+      { label: "Precisions", value: "FP32→INT4" },
+      { label: "Numbers", value: "Measured live" },
+      { label: "Distribution", value: "PyPI" }
+    ],
+    techStack: ["Python", "PyTorch", "ONNX", "Quantization", "ViT"],
+    githubUrl: "https://github.com/vichruth/ShrinkLens"
+  },
+  {
     id: "edge-id",
     title: "EdgeID",
     subtitle: "A Person Has 256 Numbers — Re-ID on Android, Without the Cloud",
@@ -104,6 +124,25 @@ def search(query, k=3):
     q = normalize(model.get_text_features(**t))
     return index.search(q.cpu().float().numpy(), k)  # 0.284s over 1,414 frames`
     }
+  },
+  {
+    id: "inboxiq",
+    title: "InboxIQ",
+    subtitle: "Student Email Copilot",
+    category: "LLM Tooling · Browser Extension",
+    description:
+      "A browser extension + backend for on-demand email triage: LLM categorisation, importance scoring against your declared interests, deadline reminders, and a legitimacy check on opportunity emails.",
+    points: [
+      "Deadlines extracted into scheduled browser notifications; importance scored against user-declared interests.",
+      "Legitimacy check combines unit-tested deterministic red-flag rules with LLM reasoning — rules catch the obvious scams, the LLM handles the subtle ones.",
+      "Bring-your-own-key design: the server never stores credentials, and the provider swaps between a cloud API (Groq) and a fully local model (Ollama) via one env variable."
+    ],
+    metrics: [
+      { label: "Credentials Stored", value: "Zero" },
+      { label: "Providers", value: "Groq / Ollama" },
+      { label: "Extension", value: "Manifest V3" }
+    ],
+    techStack: ["Python", "FastAPI", "Manifest V3", "Groq", "Ollama"]
   },
   {
     id: "classroom-monitor",
@@ -270,13 +309,13 @@ export const experiences: Experience[] = [
     period: "May 2026 – Jun 2026",
     type: "Research",
     description: [
-      "Selected to research Transformer-based person re-identification under Dr. Sridhar Raj S: extended TransReID (ViT-B/16) with ACQM, a novel attribute-conditioned attention mechanism, lifting Rank-1 to 92.0% on Market-1501.",
+      "Researched Transformer-based person re-identification under Dr. Sridhar Raj S: extended TransReID (ViT-B/16) into a five-branch multi-task model with domain-adversarial training (GRL), then added ACQM attribute-conditioned attention — 92% Rank-1 on Market-1501.",
       "Diagnosed and resolved three silent architectural failures in the evaluation pipeline — zero crashes, zero errors, accuracy quietly suppressed — by distrusting healthy-looking loss curves and reading intermediate state directly.",
-      "Ran systematic ablations across multi-task attribute learning, orthogonal part pooling, and triplet + BNNeck training regimes, all within a 6 GB VRAM budget on consumer hardware.",
-      "Patent filed; first-author paper pending publication in an IEEE journal."
+      "Ran systematic ablations across multi-task attribute learning, orthogonal part pooling, and triplet + BNNeck training regimes, all within a 6 GB VRAM budget using FP16 mixed precision and gradient accumulation.",
+      "First-author paper pending publication in an IEEE journal."
     ],
     highlightMetric: { value: "IEEE Paper", label: "Pending Publication · First Author" },
-    technologies: ["PyTorch", "TransReID", "ViT", "Model Compression", "Torchreid"]
+    technologies: ["PyTorch", "TransReID", "ViT", "Domain Adversarial (GRL)", "Torchreid"]
   },
   {
     id: "freelance",
@@ -286,12 +325,12 @@ export const experiences: Experience[] = [
     period: "2025 – Present",
     type: "Production Systems",
     description: [
-      "Operate a live 24/7 B2B lead-generation and enrichment pipeline for a migration-services client: 8-phase automation covering scraping, AI website audits via GPT-4o vision, personalised outreach, reply classification, proposals, Stripe payments, and onboarding.",
-      "Self-hosted n8n + PostgreSQL with 15+ API integrations; the operator manages the entire funnel from a phone via Telegram approval flows.",
-      "All client data handled under strict on-premise / zero-external-API constraints where sensitivity requires it. Real users, real payments, real \"why is it broken at 2 AM\" energy."
+      "Designed and built an 8-phase B2B lead-generation and enrichment pipeline for an Australian migration-services client: scraping, GPT-4o-mini website audits, personalised outreach, reply sentiment classification, proposals, Stripe payments, and onboarding.",
+      "Architected as decoupled event-driven phases (schedules, webhooks, payment events) on self-hosted n8n + PostgreSQL with 15+ API integrations; 5,832 leads scraped and enriched.",
+      "Every AI-generated message passes a human approval gate — the operator approves from a phone via Telegram — plus a Next.js dashboard for monitoring the funnel."
     ],
-    highlightMetric: { value: "24/7 Live", label: "Production System in Operation" },
-    technologies: ["n8n", "PostgreSQL", "GPT-4o Vision", "Stripe", "Telegram Bots", "REST APIs"]
+    highlightMetric: { value: "5,832 Leads", label: "Scraped & Enriched" },
+    technologies: ["n8n", "PostgreSQL", "GPT-4o-mini", "Next.js", "Stripe", "Telegram Bots"]
   },
   {
     id: "kalkini",
@@ -303,7 +342,7 @@ export const experiences: Experience[] = [
     description: [
       "Built processing pipelines with NumPy and Pandas that transform multi-threaded video stream data into optimized model inputs.",
       "Trained and fine-tuned deep learning classifiers for live threat profiling, optimizing feed-forward feature filters.",
-      "Applied transfer learning to multi-task models, improving precision while cutting compute — a 35% pipeline speedup."
+      "Applied multi-task transfer learning with shared feature extraction, improving precision while cutting compute; data pipelines cut preprocessing time by 35%."
     ],
     highlightMetric: { value: "35% Speedup", label: "Surveillance Pipeline" },
     technologies: ["PyTorch", "OpenCV", "Transfer Learning", "Pandas", "NumPy"]
@@ -345,11 +384,13 @@ export const experiences: Experience[] = [
     period: "Nov 2024 – Jan 2026",
     type: "Part-Time",
     description: [
-      "Maintained the web app for Tamil Nadu's No.1 educational platform, building quiz and study tools serving 10th and 12th standard students.",
+      "Developed and maintained the web app for one of Tamil Nadu's largest educational platforms, building quiz and study tools for 10th and 12th standard students.",
+      "Extended it with a Kotlin + Jetpack Compose Android app and a React + TypeScript admin dashboard on Firebase, shipped across 12 tagged releases with signed, R8-obfuscated builds.",
+      "Modelled Firestore so a subject's full chapter tree costs a single read, enforced access via Security Rules, and built an AI import pipeline turning PDF/DOCX question papers into human-reviewed questions.",
       "Recognised with an award from the Padasalai and Sura Publications leadership for the app work."
     ],
-    highlightMetric: { value: "TN's #1", label: "Educational Platform" },
-    technologies: ["Web Apps", "WordPress", "Software Design"]
+    highlightMetric: { value: "12 Releases", label: "Android + Admin Dashboard" },
+    technologies: ["Kotlin", "Jetpack Compose", "React", "TypeScript", "Firebase"]
   },
   {
     id: "masters-union",
@@ -437,11 +478,11 @@ export const educations: Education[] = [
     location: "Vellore, India",
     degree: "Bachelor of Technology in Computer Science and Engineering",
     period: "Jul 2024 – Jul 2028 (Expected)",
-    grade: "7.5",
-    gradeLabel: "CGPA",
+    grade: "",
+    gradeLabel: "",
     details: [
       "Research internships completed at two national institutes — NIT Tiruchirappalli and IIIT Kottayam — alongside coursework.",
-      "Certifications: Machine Learning Specialization (DeepLearning.AI, Andrew Ng), VIT Generative AI Bootcamp, AI to Vision (IIIT Kottayam), App Development Workshop (IIT Madras).",
+      "Certifications: Machine Learning Specialization (DeepLearning.AI, Andrew Ng), research internship certificates from IIIT Kottayam and NIT Trichy, VIT Generative AI Bootcamp, AI to Vision (IIIT Kottayam), App Development Workshop (IIT Madras).",
       "Junior Core Member of The Electronics Club — ML-hardware pipelines, TinyML, embedded C++ mentoring."
     ]
   },
@@ -476,14 +517,6 @@ export const awards: Award[] = [
     description: "Earned the Research Competitor badge designing minimal, exactly-correct ONNX networks that solve ARC-AGI reasoning tasks.",
     date: "Jul 2026",
     badge: "Kaggle"
-  },
-  {
-    id: "patent",
-    title: "Patent Application Filed",
-    sub: "Memory Optimization for Embedded ML",
-    description: "Filed a patent application, currently under review, on memory-optimization techniques for embedded machine learning models.",
-    date: "Under Review",
-    badge: "Intellectual Property"
   },
   {
     id: "hackademia",
